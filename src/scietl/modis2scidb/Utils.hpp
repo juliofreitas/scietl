@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2014 National Institute For Space Research (INPE) - Brazil.
 
-  This file is part of SciETL.
+  This file is part of SciETL - a free and open source tool to Extract, Transform and Load data to SciDB.
 
   SciETL is free software: you can
   redistribute it and/or modify it under the terms of the
@@ -31,8 +31,8 @@
 #define __SCIETL_MODIS2SCIDB_UTILS_HPP__
 
 // Modis2SciDB
-#include "exception.hpp"
-#include "types.hpp"
+#include "Exception.hpp"
+#include "Types.hpp"
 
 // STL
 #include <iosfwd>
@@ -70,6 +70,7 @@ namespace modis2scidb
   std::string make_subdataset_pattern(const std::string& file_name,
                                       const std::string& subdataset_name);
 
+  //! Compute the number of bytes for a given GDAL data type.
   std::size_t num_bytes(GDALDataType dt);
 
 }  // end namespace modis2scidb

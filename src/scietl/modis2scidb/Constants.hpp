@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2014 National Institute For Space Research (INPE) - Brazil.
 
-  This file is part of SciETL.
+  This file is part of SciETL - a free and open source tool to Extract, Transform and Load data to SciDB.
 
   SciETL is free software: you can
   redistribute it and/or modify it under the terms of the
@@ -20,9 +20,9 @@
  */
 
 /*!
-  \file modis2scidb/defines.hpp
+  \file scietl/modis2scidb/Constants.hpp
 
-  \brief Help macros of MODIS to SciDB.
+  \brief Help macros for modis2scidb.
 
   \author Gilberto Ribeiro de Queiroz
  */
@@ -30,9 +30,9 @@
 #ifndef __SCIETL_MODIS2SCIDB_DEFINES_HPP__
 #define __SCIETL_MODIS2SCIDB_DEFINES_HPP__
 
-const uint32_t MODIS2SCIDB_HMIN = 0;
-const uint32_t MODIS2SCIDB_HMAX = 35;
-const uint32_t MODIS2SCIDB_VMIN = 0;
-const uint32_t MODIS2SCIDB_VMAX = 17;
+const uint32_t SCIETL_MODIS2SCIDB_HMIN = 0;
+const uint32_t SCIETL_MODIS2SCIDB_HMAX = 35;
+const uint32_t SCIETL_MODIS2SCIDB_VMIN = 0;
+const uint32_t SCIETL_MODIS2SCIDB_VMAX = 17;
 
 #endif  // __SCIETL_MODIS2SCIDB_DEFINES_HPP__

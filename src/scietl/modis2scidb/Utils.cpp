@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2014 National Institute For Space Research (INPE) - Brazil.
 
-  This file is part of SciETL.
+  This file is part of SciETL - a free and open source tool to Extract, Transform and Load data to SciDB.
 
   SciETL is free software: you can
   redistribute it and/or modify it under the terms of the
@@ -28,7 +28,7 @@
  */
 
 // Modis2SciDB
-#include "utils.hpp"
+#include "Utils.hpp"
 
 // Boost
 #include <boost/algorithm/string/case_conv.hpp>

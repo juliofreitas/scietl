@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2014 National Institute For Space Research (INPE) - Brazil.
 
-  This file is part of SciETL.
+  This file is part of SciETL - a free and open source tool to Extract, Transform and Load data to SciDB.
 
   SciETL is free software: you can
   redistribute it and/or modify it under the terms of the
@@ -20,7 +20,7 @@
  */
 
 /*!
-  \file scietl/modis2scidb/exception.hpp
+  \file scietl/modis2scidb/Exception.hpp
 
   \brief Base exception class for modis2scidb.
 
@@ -39,7 +39,7 @@
 
 namespace modis2scidb
 {
-  //! Base exception class for MODIS to SciDB.
+  //! Base exception class for modis2scidb.
   struct exception: virtual std::exception, virtual boost::exception { };
 
   //! An exception occurried during a parse action.
@@ -54,12 +54,13 @@ namespace modis2scidb
   //! An exception indicating an invalid directory.
   struct invalid_dir_error: virtual exception { };
 
-  //! An exception indicating a error due to file handling.
+  //! An exception indicating an error due to file handling.
   struct file_error: virtual exception { };
 
   //! An exception indicatin an error reported by GDAL.
   struct gdal_error: virtual exception { };
-  
+
+  //! An exception indicating a data conversion error.
   struct conversion_error: virtual exception { };
 
   //! The base type for error report messages.
