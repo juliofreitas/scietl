@@ -46,7 +46,7 @@ If you want to build yourself SciETL then you need to install some third-party l
 
 We have prepared a special bash script for building and installing the dependencies on Linux Ubuntu 14.04. This script can be found in SciETL source tree under *install* folder. Follow the steps below:
 
-- Download the third-party libraries package used by the development team: [scietl-3rdparty-linux-ubuntu-14.04.tar.gz](http://www.dpi.inpe.br/e-sensing-devel/scietl-3rdparty-linux-ubuntu-14.04.tar.gz).
+- Download the third-party libraries package used by the development team: [scietl-3rdparty-linux-ubuntu-14.04.tar.gz](http://www.dpi.inpe.br/esensing-devel/scietl-3rdparty-linux-ubuntu-14.04.tar.gz).
 
 - Copy the script [install-3rdparty-linux-ubuntu-14.04.sh](https://raw.githubusercontent.com/e-sensing/scietl/master/install/install-3rdparty-linux-ubuntu-14.04.sh) to the same folder you have downloaded the *scietl-3rdparty-linux-ubuntu-14.04.tar.gz* package.
 
