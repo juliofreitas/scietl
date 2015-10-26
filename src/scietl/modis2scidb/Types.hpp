@@ -16,11 +16,11 @@
 
   You should have received a copy of the GNU Lesser General Public License
   along with SciETL. See LICENSE. If not, write to
-  e-sensing team at <esensning-team@dpi.inpe.br>.
+  e-sensing team at <esensing-team@dpi.inpe.br>.
  */
 
 /*!
-  \file scietl/modis2scidb/types.hpp
+  \file scietl/modis2scidb/Types.hpp
 
   \brief General data types used in MODIS to SciDB.
 

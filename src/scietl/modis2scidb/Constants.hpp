@@ -16,23 +16,23 @@
 
   You should have received a copy of the GNU Lesser General Public License
   along with SciETL. See LICENSE. If not, write to
-  e-sensing team at <esensning-team@dpi.inpe.br>.
+  e-sensing team at <esensing-team@dpi.inpe.br>.
  */
 
 /*!
   \file scietl/modis2scidb/Constants.hpp
 
-  \brief Help macros for modis2scidb.
+  \brief Helper constants for modis2scidb.
 
   \author Gilberto Ribeiro de Queiroz
  */
 
-#ifndef __SCIETL_MODIS2SCIDB_DEFINES_HPP__
-#define __SCIETL_MODIS2SCIDB_DEFINES_HPP__
+#ifndef __SCIETL_MODIS2SCIDB_CONSTANTS_HPP__
+#define __SCIETL_MODIS2SCIDB_CONSTANTS_HPP__
 
 const uint32_t SCIETL_MODIS2SCIDB_HMIN = 0;
 const uint32_t SCIETL_MODIS2SCIDB_HMAX = 35;
 const uint32_t SCIETL_MODIS2SCIDB_VMIN = 0;
 const uint32_t SCIETL_MODIS2SCIDB_VMAX = 17;
 
-#endif  // __SCIETL_MODIS2SCIDB_DEFINES_HPP__
+#endif  // __SCIETL_MODIS2SCIDB_CONSTANTS_HPP__
