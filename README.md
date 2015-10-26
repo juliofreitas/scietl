@@ -14,17 +14,18 @@ modis2scidb [--version] [--help] --f <modis-hdf-source-file>
 ```
 
 It accepts the following options:
-- --version: Prints MODIS to SciDB conversion tool version.
-- --verbose: Turns on verbose mode: prints timing and some more information about the conversion progress.
-- --help: Prints help message.
-- --f: The source HDF file.
-- --t: The time point in the timeline. A number starting from 0.
-- --b: A comma separated list of data bands to convert to SciDB load format (see example below).
-- --o: The output file name.
+- ```--version```: Prints MODIS to SciDB conversion tool version.
+- ```--verbose```: Turns on verbose mode: prints timing and some more information about the conversion progress.
+- ```--help```: Prints help message.
+- ```--f```: The source HDF file.
+- ```--t```: The time point in the timeline. A number starting from 0.
+- ```--b```: A comma separated list of data bands to convert to SciDB load format (see example below).
+- ```--o```: The output file name.
 
 Example:
 ```
 $ modis2scidb --f MOD13Q1.A2002241.h13v10.005.2008248173553.hdf --o mod13q1-1d-array.scidb --t 1 --b "0,1,2,3,4,5,6,7,8"
+```
 
 See [MODIS to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/modis2scidb-user-manual.txt) for more information on it.
 
