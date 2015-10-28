@@ -68,7 +68,7 @@ In the root directory of SciETL codebase (the source code tree) there are some t
 
 - **[DEPENDENCIES:](https://github.com/e-sensing/scietl/blob/master/DEPENDENCIES)** The list of third-party library you must install before building SciETL.
 
-- **[LICENSE:](https://github.com/e-sensing/scietl/blob/master/LICENSE)** License statement in plain txt format.
+- **[LICENSE:](https://github.com/e-sensing/scietl/blob/master/LICENSE)** Licence statement in plain txt format.
 
 - **[README:](https://github.com/e-sensing/scietl/blob/master/README)** Contains instructions about how to build and how is organized SciETL source code.
 
