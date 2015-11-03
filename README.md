@@ -3,7 +3,7 @@ Extract, Transform and Load for SciDB
 
 Right now we have some command line tools for converting common Earth Observation datasets to spatio-temporal arrays in SciDB:
 - **modis2scidb:** a command line application for converting MODIS HDF data into SciDB multidimensional arrays.
-- **srtm2scidb:** a command line application for converting SRTM data into SciDB multidimensional arrays.
+- **srtm2scidb:** a command line application for converting SRTM HGT data into SciDB multidimensional arrays.
 
 ## modis2scidb
 
