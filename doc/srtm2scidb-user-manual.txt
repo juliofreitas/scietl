@@ -1,44 +1,18 @@
 NAME
-      srtm2scidb - a command line application for converting SRTM data into SciDB multidimensional arrays.
+      srtm2scidb - a command line application for converting SRTM HGT data into SciDB multidimensional arrays.
 
 SYNOPSIS
 
-      srtm2scidb [--version] [--help] --f <SRTM-source-file>
-                  --o <output-file>
-                  --b "<which bands to convert>" --t <time-point>
+      srtm2scidb <SRTM-hgt-source-file> <output-file>
 
 DESCRIPTION
 
 srtm2scidb is a command line application for converting
-SRTM data into SciDB multidimensional arrays.
-
-OPTIONS
-
-      --version
-          Prints SRTM to SciDB conversion tool version.
-
-      --verbose
-          Turns on verbose mode: prints timing and some more information about the conversion progress.
-
-      --help
-          Prints help message.
-
-      --f
-          The source data file.
-
-      --t
-          The time point in the timeline. A number starting from 0.
-
-      --b
-          A comma separated list of data bands to convert to SciDB load format (see example below).
-
-      --o
-          The output file name.
-
+SRTM HGT data into SciDB multidimensional arrays.
 
 FURTHER DOCUMENTATION
 
-      srtm2scidb --f xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxx --o saida.scidb --t 1 --b "0,1,2,3,4,5,6,7,8"
+      srtm2scidb S34W054.hgt name.scidb
 
 
 For more infomation on SRTM to SciDB, please, visit its main web page at: https://github.com/e-sensing/scietl.
