@@ -32,25 +32,14 @@ See [MODIS to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/
 
 ## srtm2scidb
 
-srtm2scidb is a command line application for converting SRTM data into SciDB multidimensional arrays.
+srtm2scidb is a command line application for converting SRTM HGT data into SciDB multidimensional arrays.
 ```
-srtm2scidb [--version] [--help] --f <srtm-source-file>
-            --o <output-file>
-            --b "<which bands to convert>" --t <time-point>
+srtm2scidb <srtm-hgt-source-file> <scidb-output-file>
 ```
-
-It accepts the following options:
-- ```--version```: Prints SRTM to SciDB conversion tool version.
-- ```--verbose```: Turns on verbose mode: prints timing and some more information about the conversion progress.
-- ```--help```: Prints help message.
-- ```--f```: The source SRTM file.
-- ```--t```: The time point in the timeline. A number starting from 0.
-- ```--b```: A comma separated list of data bands to convert to SciDB load format (see example below).
-- ```--o```: The output file name.
 
 Example:
 ```
-$ ./srtm2scidb --f xxxxxxxxxxxxxxxxxxxx.xxx --o mod13q1-1d-array.scidb --t 1 --b "0,1,2,3,4,5,6,7,8"
+$ ./srtm2scidb S34W054.hgt name.scidb
 ```
 
 See [SRTM to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/srtm2scidb-user-manual.txt) for more information on it.
