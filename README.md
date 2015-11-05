@@ -3,6 +3,7 @@ Extract, Transform and Load for SciDB
 
 Right now we have some command line tools for converting common Earth Observation datasets to spatio-temporal arrays in SciDB:
 - **modis2scidb:** a command line application for converting MODIS HDF data into SciDB multidimensional arrays.
+- **srtm2scidb:** a command line application for converting SRTM HGT data into SciDB multidimensional arrays.
 
 ## modis2scidb
 
@@ -24,10 +25,25 @@ It accepts the following options:
 
 Example:
 ```
-$ modis2scidb --f MOD13Q1.A2002241.h13v10.005.2008248173553.hdf --o mod13q1-1d-array.scidb --t 1 --b "0,1,2,3,4,5,6,7,8"
+$ ./modis2scidb --f MOD13Q1.A2002241.h13v10.005.2008248173553.hdf --o mod13q1-1d-array.scidb --t 1 --b "0,1,2,3,4,5,6,7,8"
 ```
 
 See [MODIS to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/modis2scidb-user-manual.txt) for more information on it.
+
+## srtm2scidb
+
+srtm2scidb is a command line application for converting SRTM HGT data into SciDB multidimensional arrays.
+```
+srtm2scidb <srtm-hgt-source-file> <scidb-output-file>
+```
+
+Example:
+```
+$ ./srtm2scidb S34W054.hgt name.scidb
+```
+
+See [SRTM to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/srtm2scidb-user-manual.txt) for more information on it.
+
 
 ## Source Code Instructions
 
@@ -41,7 +57,7 @@ In the root directory of SciETL codebase (the source code tree) there are some t
 
 - **[DEPENDENCIES:](https://github.com/e-sensing/scietl/blob/master/DEPENDENCIES)** The list of third-party library you must install before building SciETL.
 
-- **[LICENSE:](https://github.com/e-sensing/scietl/blob/master/LICENSE)** Licence statement in plain txt format.
+- **[LICENSE:](https://github.com/e-sensing/scietl/blob/master/LICENSE)** License statement in plain txt format.
 
 - **[README:](https://github.com/e-sensing/scietl/blob/master/README)** Contains instructions about how to build and how is organized SciETL source code.
 
@@ -81,7 +97,7 @@ We have prepared a special bash script for building and installing the dependenc
 $ SCIETL_DEPENDENCIES_DIR="/home/user/mylibs" ./install-3rdparty-linux-ubuntu-14.04.sh
 ```
 
-**Note:** Don't choose as target location a system folder such as */usr* or */usr/local*. Try some user specifiic folder. The best suggestion is to replace the folder named *user* by your user name.
+**Note:** Don't choose as target location a system folder such as */usr* or */usr/local*. Try some user specific folder. The best suggestion is to replace the folder named *user* by your user name.
 
 
 ## Cloning SciETL Repository
@@ -154,7 +170,7 @@ For instance, to checkout *t-1.0.0-alpha1* you can enter the following command:
 
 ## Build Instructions
 
-After choosing the right branch or tag to work on, follow the insructions on **DEPENDENCIES** section. Make sure you have all the third-party library dependencies listed in this section before trying to build SciETL.
+After choosing the right branch or tag to work on, follow the instructions on **DEPENDENCIES** section. Make sure you have all the third-party library dependencies listed in this section before trying to build SciETL.
 
 The `build/cmake` folder contains a CMake project for building SciETL.
 
@@ -183,7 +199,7 @@ $ cd build-release
 
 1.4. For Linux systems you must choose the build configuration:
 ```
-$ cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING="Release" -DCMAKE_INSTALL_PREFIX:PATH="/home/user/myinstall/scietl" -DCMAKE_PREFIX_PATH:PATH="/home/user/mylibs;/home/user/mylibs/terralib5/lib/cmake" ../codebase/build/cmake
+$ cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING="Release" -DCMAKE_INSTALL_PREFIX:PATH="/home/user/myinstall/scietl" -DCMAKE_PREFIX_PATH:PATH="/home/user/mylibs" ../codebase/build/cmake
 ```
 
 1.5 Building (with 4 process in parallel):

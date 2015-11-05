@@ -122,6 +122,7 @@ find_package(GDAL REQUIRED)
 #
 
 option(SCIETL_MODIS2SCIDB_ENABLED "Build SciETL MODIS conversion tool?" ON)
+option(SCIETL_SRTM2SCIDB_ENABLED "Build SciETL SRTM conversion tool?" ON)
 
 
 #
@@ -155,6 +156,10 @@ configure_file(${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/Version.hpp.in
 
 if(SCIETL_MODIS2SCIDB_ENABLED)
   add_subdirectory(scietl_modis2scidb)
+endif()
+
+if(SCIETL_SRTM2SCIDB_ENABLED)
+  add_subdirectory(scietl_srtm2scidb)
 endif()
 
 
