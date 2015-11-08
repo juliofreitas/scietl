@@ -1,0 +1,16 @@
+{
+    "pg": {
+        "user": "postgres",
+        "password": "",
+        "port": 5433,
+        "dbname": "modis_metadata"
+    },
+    "load": {
+        "geo_array": "mod09q1",
+        "hdf_path": "/net/chronos/dados1/modisOriginal/MOD09Q1/",
+        "start_date": "2000049",
+        "period": 8,
+        "1d": "<lltid:int64, red:int16, nir:int16, quality:uint16>[k=0:*, 1048576, 0]",
+        "bands": "0,1,2"
+    }
+}
