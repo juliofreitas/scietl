@@ -521,7 +521,7 @@ fi
 #
 # GDAL/OGR 1.11.2
 #
-if [ ! -f "$SCIETL_DEPENDENCIES_DIR/gdal1/lib/libgdal.so" ]; then
+if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libgdal.so" ]; then
   echo "installing GDAL/OGR..."
   echo ""
   sleep 1s
@@ -532,33 +532,7 @@ if [ ! -f "$SCIETL_DEPENDENCIES_DIR/gdal1/lib/libgdal.so" ]; then
   cd gdal-1.11.2
   valid $? "Error: could not enter gdal-1.11.2!"
 
-  CPPFLAGS="-I$SCIETL_DEPENDENCIES_DIR/include" LDFLAGS=-L$SCIETL_DEPENDENCIES_DIR/lib ./configure --with-png=$SCIETL_DEPENDENCIES_DIR --with-libtiff=$SCIETL_DEPENDENCIES_DIR --with-geotiff=$SCIETL_DEPENDENCIES_DIR --with-jpeg=$SCIETL_DEPENDENCIES_DIR  --with-gif --with-ecw=yes --with-expat=yes --with-geos=$SCIETL_DEPENDENCIES_DIR/bin/geos-config --with-threads --without-python --prefix=$SCIETL_DEPENDENCIES_DIR/gdal1 --with-hdf4=$SCIETL_DEPENDENCIES_DIR --without-netcdf 
-  valid $? "Error: could not configure gdal!"
-
-  make -j 4 -s
-  valid $? "Error: could not make gdal"
-
-  make install
-  valid $? "Error: Could not install gdal"
-
-  cd ..
-fi
-
-#
-# GDAL/OGR 2.0.1
-#
-if [ ! -f "$SCIETL_DEPENDENCIES_DIR/gdal2/lib/libgdal.so" ]; then
-  echo "installing GDAL/OGR..."
-  echo ""
-  sleep 1s
-
-  tar xzvf gdal-2.0.1.tar.gz
-  valid $? "Error: could not uncompress gdal-2.0.1.tar.gz!"
-
-  cd gdal-2.0.1
-  valid $? "Error: could not enter gdal-2.0.1!"
-
-  CPPFLAGS="-I$SCIETL_DEPENDENCIES_DIR/include" LDFLAGS=-L$SCIETL_DEPENDENCIES_DIR/lib ./configure --with-png=$SCIETL_DEPENDENCIES_DIR --with-libtiff=$SCIETL_DEPENDENCIES_DIR --with-geotiff=$SCIETL_DEPENDENCIES_DIR --with-jpeg=$SCIETL_DEPENDENCIES_DIR  --with-gif --with-ecw=yes --with-expat=yes --with-geos=$SCIETL_DEPENDENCIES_DIR/bin/geos-config --with-threads --without-python --prefix=$SCIETL_DEPENDENCIES_DIR/gdal2 --with-hdf4=$SCIETL_DEPENDENCIES_DIR --without-netcdf
+  CPPFLAGS="-I$SCIETL_DEPENDENCIES_DIR/include" LDFLAGS=-L$SCIETL_DEPENDENCIES_DIR/lib ./configure --with-png=$SCIETL_DEPENDENCIES_DIR --with-libtiff=$SCIETL_DEPENDENCIES_DIR --with-geotiff=$SCIETL_DEPENDENCIES_DIR --with-jpeg=$SCIETL_DEPENDENCIES_DIR  --with-gif --with-ecw=yes --with-expat=yes --with-geos=$SCIETL_DEPENDENCIES_DIR/bin/geos-config --with-threads --without-python --prefix=$SCIETL_DEPENDENCIES_DIR --with-hdf4=$SCIETL_DEPENDENCIES_DIR --without-netcdf 
   valid $? "Error: could not configure gdal!"
 
   make -j 4 -s
