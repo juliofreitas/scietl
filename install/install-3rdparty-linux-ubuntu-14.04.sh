@@ -157,6 +157,34 @@ fi
 
 
 #
+# flex
+#
+flex_test=`dpkg -s flex | grep Status`
+
+if [ "$flex_test" != "Status: install ok installed" ]; then
+  sudo apt-get -y install flex
+  valid $? "Error: could not install flex! Please, install readline: sudo apt-get -y install flex"
+  echo "flex installed!"
+else
+  echo "flex already installed!"
+fi
+
+
+#
+# bison
+#
+bison_test=`dpkg -s bison | grep Status`
+
+if [ "$bison_test" != "Status: install ok installed" ]; then
+  sudo apt-get -y install bison
+  valid $? "Error: could not install bison! Please, install readline: sudo apt-get -y install bison"
+  echo "bison installed!"
+else
+  echo "bison already installed!"
+fi
+
+
+#
 # CMake
 #
 cmake_test=`dpkg -s cmake | grep Status`
