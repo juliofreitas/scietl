@@ -1,0 +1,69 @@
+  SciETL - Codebase Branches
+  ==========================
+
+This document explains the available branches and tags in SciETL's codebase.
+You should refer to this document before choosing the right version of SciETL to build.
+
+List of Branches
+----------------
+
+You can check all branches available (remotes and local) and see the current one (marked with "*"):
+  $ git branch -a
+
+The output of above command will be something like:
+  * master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+
+In the above output the "* master" means that the current branch is master.
+
+We have the following branches:
+* master:
+  This is the branch where the development team is working to add new features to future versions of SciETL. It may be instable although the codebase is subject to automatic tests (regression and unittests). We don't recommend to generate production versions of SciETL from this branch. Use it for testing new features and get involved with SciETL development.
+
+* b-1.0.0-alpha:
+  This will be the first branch in SciETL's codebase for the generation 1.
+
+To switch to one of the branches listed above, use the checkout command and create a local branch to track the remote branch. The syntax of "git checkout" is:
+  $ git checkout -b <local_branch_name> <remote_branch_name without this part "remotes/">
+
+In order to switch to branch 1.0.0-alpha you can use the following command:
+  $ git checkout -b b-1.0.0-alpha origin/b-1.0.0-alpha
+
+
+List of Tags
+------------
+
+Also there are tags which usually are originated from a release branch. For instance, tag t-1.0.0-alpha1 will be originated from branch b-1.0.0-alpha.
+
+To check all tags available, use:
+  $ git tag -l           (list all tag names)
+  t-1.0.0-alpha1
+  t-1.0.0-alpha2
+  t-1.0.0-beta1
+  t-1.0.0-rc1
+  t-1.0.0
+  ...
+
+If you want to checkout a specific version given by a tag and create a local branch to work on you can use the following git command:
+  $ git checkout -b <local_branch_tag_name> <one_of_tag_name_listed>
+
+For instance, to checkout the tag for 1.0.0-alpha1 you can enter the following command:
+  $ git checkout -b t-1.0.0-alpha1  t-1.0.0-alpha1
+
+Final Remarks
+-------------
+
+After choosing the right branch or tag to work on, follow the BUILD-INSTRUCTIONS file available on the codebase.
+
+To see all valid branches and tags, please, see:
+https://trac.dpi.inpe.br/esensing/wiki/scietl/branches_tags
+
+If you want to understand the rationale behind branchs and SciETL versioning, please, see the wiki at:
+https://trac.dpi.inpe.br/esensing/wiki/scietl/versioning
+
+For more information on SciETL, please, visit its main web page at: https://trac.dpi.inpe.br/esensing.
+
+
+  August 2015, e-Sensing Team <esensing-team@dpi.inpe.br>
+

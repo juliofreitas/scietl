@@ -1,0 +1,51 @@
+  SciETL - Extract, Transform and Load for SciDB
+  ==============================================
+
+Right now we have some command line tools for converting common Earth Observation datasets to spatio-temporal arrays in SciDB:
+  - modis2scidb: a command line application for converting MODIS HDF data into SciDB multidimensional arrays.
+  - srtm2scidb: a command line application for converting SRTM HGT data into SciDB multidimensional arrays.
+
+Instructions
+------------
+
+The documents below are in the root directory of SciETL codebase and they explain the details of the codebase:
+
+- BRANCHES-AND-TAGS.: Notes on how to switch to the right branch to work on or the right tag to get the source code.
+
+- BUILD-INSTRUCTIONS: Notes on how to compile and install SciETL for each platform.
+
+- CHANGELOG.........: List of changes in SciETL source code.
+
+- LICENSE...........: Licence statement in plain txt format.
+
+- README............: This file. It contains instructions about how to build and how is organized SciETL plataform source code.
+
+
+Directories
+-----------
+
+build....: Contains the CMake scripts with commands, macros and functions used to build the environment for compiling libraries and executables in different platforms using the CMake tool.
+
+examples.: Some examples on how to use SciETL API and GUI.
+
+licenses.: Copyright notices of third-party libraries used by SciETL.
+
+resources: Fonts, images, sql, and xml files among other resources of general use.
+
+share....: XML Schema (.xsd), JSON, translations files and OGC specifications that is shared and installed with SciETL.
+
+src......: Contains the source code of SciETL and the source code of automatic tests.
+
+
+Reporting Bugs
+--------------
+
+Any problem should be reported to esensing-developers@dpi.inpe.br.
+
+
+For more information on SciETL, please, visit its main web page at: https://trac.dpi.inpe.br/esensing.
+
+
+  August 2015, e-Sensing Team <esensing-team@dpi.inpe.br>
+
+
