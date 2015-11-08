@@ -45,8 +45,8 @@ target_link_libraries(modis2scidb ${Boost_SYSTEM_LIBRARY}
                                   ${Boost_PROGRAM_OPTIONS_LIBRARY}
                                   ${GDAL_LIBRARY})
 
-#install(TARGETS modis2scidb
-#        EXPORT scietl-targets
-#        RUNTIME DESTINATION ${SCIETL_DESTINATION_RUNTIME} COMPONENT runtime
-#        LIBRARY DESTINATION ${SCIETL_DESTINATION_LIBRARY} COMPONENT runtime
-#        ARCHIVE DESTINATION ${SCIETL_DESTINATION_ARCHIVE} COMPONENT runtime)
+install(TARGETS modis2scidb
+        EXPORT scietl-targets
+        RUNTIME DESTINATION ${SCIETL_DESTINATION_RUNTIME} COMPONENT runtime
+        LIBRARY DESTINATION ${SCIETL_DESTINATION_LIBRARY} COMPONENT runtime
+        ARCHIVE DESTINATION ${SCIETL_DESTINATION_ARCHIVE} COMPONENT runtime)
