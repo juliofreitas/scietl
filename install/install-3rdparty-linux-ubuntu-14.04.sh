@@ -598,14 +598,8 @@ if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libpydev.so" ]; then
   cd ..
   valid $? "Error: could not enter pyhdf-0.8.3!"
 
-  INCLUDE_DIRS=$SCIETL_DEPENDENCIES_DIR/include/hdf LIBRARY_DIRS=$SCIETL_DEPENDENCIES_DIR/lib NOSZIP=1 python setup.py install
+  sudo INCLUDE_DIRS=/usr/include/hdf LIBRARY_DIRS=/usr/lib NOSZIP=1 python setup.py install
   valid $? "Error: could not configure gdal!"
-
-  make -j 4 -s
-  valid $? "Error: could not make gdal"
-
-  make install
-  valid $? "Error: Could not install gdal"
 
   cd ..
 fi
