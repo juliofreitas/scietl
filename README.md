@@ -44,6 +44,41 @@ $ ./srtm2scidb S34W054.hgt name.scidb
 
 See [SRTM to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/srtm2scidb-user-manual.txt) for more information on it.
 
+## modis2scidb-loader
+
+modis2scidb-loader is a Python command line application for orchestrating the load of a set of MODIS HDF data into SciDB multidimensional arrays. These scripts are available in the [py-tools folder](https://github.com/e-sensing/scietl/tree/master/py-tools).
+
+The modis2scidb-loader is organized as follows:
+- **addHdfs2bin.py:** script that export/adds an HDF file to SciDB's binary format.
+- **checkFolder.py:** script that checks a folder for SciDB's binary files.
+- **load2scidb.py:** script that loads a binary file to a SciDB database.
+- **run.py:** it builds the path to the MODIS files and then it calls **addHdfs2bin.py**.
+
+In order to use modis2scidb-loader:
+- Download the scripts to the *script-folder*.
+- Copy the file to the SciDB coordinator instance.
+- Create a destination array in SciDB. This is the *dest-array*:
+  -  For MOD09Q1:
+```
+CREATE ARRAY MOD09Q1 <red:int16, nir:int16, quality:uint16>
+             [col_id=48000:72000,1014,5,row_id=38400:62400,1014,5,time_id=0:9200,1,0];
+```
+- For MOD13Q1:
+```
+CREATE ARRAY MOD13Q1 &lt;ndvi:int16, evi:int16, quality:uint16, red:int16, nir:int16, blue:int16, mir:int16, viewza:int16, sunza:int16, relaza:int16, cdoy:int16, reli:int16&gt; [col_id=48000:72000,502,5,row_id=38400:62400,502,5,time_id=0:9200,1,0];
+```
+- Create a folder accessible by SciDB. This is the *check-folder* from where data is loaded to SciDB.
+- Run *checkFolder.py* pointing to the *check-folder*. The files found here will be uploaded to SciDB. For example:
+```
+$ python checkFolder.py /home/scidb/toLoad/ /home/scidb/modis2scidb/ MOD09Q1 &
+```
+- Run *addHdfs2bin.py* to export MODIS HDFs to binary files. After finishing, the file can be copied to the *check-folder*. For example:
+```
+$ python addHdfs2bin.py /home/scidb/MODIS_ARC/MODIS/MOD09Q1.005/2000.02.18/MOD09Q1.A2000049.h10v08.005.2006268191328.hdf /home/scidb/MOD09Q1.A2000049.h10v08.005.2006268191328.sdbbin
+
+$ mv /home/scidb/MOD09Q1.A2000049.h10v08.005.2006268191328.sdbbin /home/scidb/toLoad/MOD09Q1.A2000049.h10v08.005.2006268191328.sdbbin
+```
+- Alternatively, you can use *run.py* to make calls to *addHdfs2bin.py* on many HDFs.
 
 ## Source Code Instructions
 
@@ -83,6 +118,10 @@ If you want to build yourself SciETL then you need to install some third-party l
 - **Boost (Mandatory):** SciETL is built on top of Boost libraries. You will need to have them installed in order to build SciETL. Make sure to have at least version 1.54.0 installed. If you prefer to install from source, download it from: http://www.boost.org.
 
 - **GDAL (Mandatory):** **TODO**.
+
+- **Python (Mandatory):** **TODO**.
+
+- **pyhdf (Mandatory):** **TODO**.
  
 ### Bash script for building all dependencies on Linux Ubuntu 14.04
 
