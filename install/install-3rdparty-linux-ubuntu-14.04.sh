@@ -127,6 +127,12 @@ else
   echo "python-numpy already installed!"
 fi
 
+sudo apt-get -y install python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose libhdf4-dev swig
+
+valid $? "Error: could not install python-numpy! Please, install readline: sudo apt-get -y install python-numpy"
+
+echo "python tools and libs for pydev installed!"
+
 
 #
 # autoconf
@@ -561,6 +567,38 @@ if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libgdal.so" ]; then
   valid $? "Error: could not enter gdal-1.11.2!"
 
   CPPFLAGS="-I$SCIETL_DEPENDENCIES_DIR/include" LDFLAGS=-L$SCIETL_DEPENDENCIES_DIR/lib ./configure --with-png=$SCIETL_DEPENDENCIES_DIR --with-libtiff=$SCIETL_DEPENDENCIES_DIR --with-geotiff=$SCIETL_DEPENDENCIES_DIR --with-jpeg=$SCIETL_DEPENDENCIES_DIR  --with-gif --with-ecw=yes --with-expat=yes --with-geos=$SCIETL_DEPENDENCIES_DIR/bin/geos-config --with-threads --without-python --prefix=$SCIETL_DEPENDENCIES_DIR --with-hdf4=$SCIETL_DEPENDENCIES_DIR --without-netcdf 
+  valid $? "Error: could not configure gdal!"
+
+  make -j 4 -s
+  valid $? "Error: could not make gdal"
+
+  make install
+  valid $? "Error: Could not install gdal"
+
+  cd ..
+fi
+
+#
+# pydev
+#
+if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libpydev.so" ]; then
+  echo "installing pyhdf..."
+  echo ""
+  sleep 1s
+
+  tar xzvf pyhdf-0.8.3.tar.gz
+  valid $? "Error: could not uncompress pyhdf-0.8.3.tar.gz!"
+
+  cd pyhdf-0.8.3/pyhdf
+  valid $? "Error: could not enter pyhdf-0.8.3/pyhdf!"
+
+  swig -python hdfext.i
+  valid $? "Error: could not use swig for pyhdf!"
+  
+  cd ..
+  valid $? "Error: could not enter pyhdf-0.8.3!"
+
+  INCLUDE_DIRS=$SCIETL_DEPENDENCIES_DIR/include/hdf LIBRARY_DIRS=$SCIETL_DEPENDENCIES_DIR/lib NOSZIP=1 python setup.py install
   valid $? "Error: could not configure gdal!"
 
   make -j 4 -s
