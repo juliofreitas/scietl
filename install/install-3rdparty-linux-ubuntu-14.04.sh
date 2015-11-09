@@ -121,17 +121,64 @@ numpy_test=`dpkg -s python-numpy | grep Status`
 
 if [ "$numpy_test" != "Status: install ok installed" ]; then
   sudo apt-get -y install python-numpy
-  valid $? "Error: could not install python-numpy! Please, install readline: sudo apt-get -y install python-numpy"
+  valid $? "Error: could not install python-numpy! Please, install numpy: sudo apt-get -y install python-numpy"
   echo "python-numpy installed!"
 else
   echo "python-numpy already installed!"
 fi
 
-sudo apt-get -y install python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose libhdf4-dev swig
+scipy_test=`dpkg -s python-scipy | grep Status`
 
-valid $? "Error: could not install python-numpy! Please, install readline: sudo apt-get -y install python-numpy"
+if [ "$scipy_test" != "Status: install ok installed" ]; then
+  sudo apt-get -y install python-scipy
+  valid $? "Error: could not install python-scipy! Please, install scipy: sudo apt-get -y install python-scipy"
+  echo "python-scipy installed!"
+else
+  echo "python-scipy already installed!"
+fi
 
+matplotlib_test=`dpkg -s python-matplotlib | grep Status`
+
+if [ "$matplotlib_test" != "Status: install ok installed" ]; then
+  sudo apt-get -y install python-matplotlib
+  valid $? "Error: could not install python-matplotlib! Please, install matplotlib: sudo apt-get -y install python-matplotlib"
+  echo "python-matplotlib installed!"
+else
+  echo "python-matplotlib already installed!"
+fi
+
+sudo apt-get -y install ipython ipython-notebook python-pandas python-sympy python-nose
+valid $? "Error: could not install python tools and libs for pydev! Please, install: sudo apt-get -y install ipython ipython-notebook python-pandas python-sympy python-nose"
 echo "python tools and libs for pydev installed!"
+
+
+#
+# swig support
+#
+swig_test=`dpkg -s swig-dev | grep Status`
+
+if [ "$swig_test" != "Status: install ok installed" ]; then
+  sudo  apt-get -y install swig
+  valid $? "Error: could not install swig! Please, install swig: sudo apt-get -y install swig"
+  echo "swig installed!"
+else
+  echo "swig already installed!"
+fi
+
+
+#
+# hdf4 support
+#
+libhdf4_test=`dpkg -s libhdf4-dev | grep Status`
+
+if [ "$libhdf4_test" != "Status: install ok installed" ]; then
+  sudo  apt-get -y install libhdf4-dev
+  valid $? "Error: could not install libhdf4-dev! Please, install libhdf4-dev: sudo apt-get -y install libhdf4-dev"
+  echo "libhdf4-dev installed!"
+else
+  echo "libhdf4-dev already installed!"
+fi
+
 
 
 #
@@ -442,33 +489,6 @@ fi
 
 
 #
-# SZIP
-#
-if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libsz.so" ]; then
-  echo "installing SZIP..."
-  echo ""
-  sleep 1s
-
-  tar xzvf szip-2.1.tar.gz
-  valid $? "Error: could not uncompress szip-2.1.tar.gz!"
-
-  cd szip-2.1
-  valid $? "Error: could not enter szip-2.1!"
-
-  ./configure --prefix=$SCIETL_DEPENDENCIES_DIR
-  valid $? "Error: could not configure SZIP!"
-
-  make -j 4
-  valid $? "Error: could not make SZIP!"
-
-  make install
-  valid $? "Error: Could not install SZIP!"
-
-  cd ..
-fi
-
-
-#
 # ICU
 #
 if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libicuuc.so" ]; then
@@ -539,7 +559,7 @@ if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libmfhdf.a" ]; then
   cd hdf-4.2.9
   valid $? "Error: could not enter hdf-4.2.9!"
 
-  CFLAGS=-fPIC ./configure --prefix=$SCIETL_DEPENDENCIES_DIR --with-szlib=$SCIETL_DEPENDENCIES_DIR --with-zlib --with-jpeg=$SCIETL_DEPENDENCIES_DIR --enable-netcdf --disable-fortran
+  CFLAGS=-fPIC ./configure --prefix=$SCIETL_DEPENDENCIES_DIR --with-zlib --with-jpeg=$SCIETL_DEPENDENCIES_DIR --enable-netcdf --disable-fortran
   valid $? "Error: could not configure hdf-4!"
 
   make -j 4
@@ -581,7 +601,7 @@ fi
 #
 # pydev
 #
-if [ ! -f "$SCIETL_DEPENDENCIES_DIR/lib/libpydev.so" ]; then
+if [ ! -d "/usr/local/lib/python2.7/dist-packages/pyhdf-0.8.3-py2.7-linux-x86_64.egg" ]; then
   echo "installing pyhdf..."
   echo ""
   sleep 1s
