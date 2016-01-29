@@ -140,6 +140,7 @@ find_package(GDAL REQUIRED)
 
 option(SCIETL_MODIS2SCIDB_ENABLED "Build SciETL MODIS conversion tool?" ON)
 option(SCIETL_SRTM2SCIDB_ENABLED "Build SciETL SRTM conversion tool?" ON)
+option(SCIETL_FOCOS2SCIDB_ENABLED "Build SciETL FOCUS conversion tool?" ON)
 
 
 #
@@ -178,6 +179,11 @@ endif()
 if(SCIETL_SRTM2SCIDB_ENABLED)
   add_subdirectory(scietl_srtm2scidb)
 endif()
+
+if(SCIETL_FOCOS2SCIDB_ENABLED)
+  add_subdirectory(scietl_focos2scidb)
+endif()
+
 
 
 #
