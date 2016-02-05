@@ -20,27 +20,27 @@
  */
 
 /*!
-  \file scietl/focos2scidb/Exception.hpp
+  \file scietl/core/Exception.hpp
 
-  \brief Base exception class for focos2scidb.
+  \brief Base exception class for SciETL Core Runtime Module.
 
   \author Gilberto Ribeiro de Queiroz
  */
 
-#ifndef __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
-#define __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#ifndef __SCIETL_CORE_EXCEPTION_HPP__
+#define __SCIETL_CORE_EXCEPTION_HPP__
 
 // SciETL
 #include "../Exception.hpp"
 
 namespace scietl
 {
-  namespace focos2scidb
+  namespace core
   {
     //! Base exception class for focos2scidb.
     struct exception: virtual scietl::exception { };
-    
-  }  // end namespace focos2scidb
+
+  }  // end namespace core
 }    // end namespace scietl
 
-#endif // __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#endif // __SCIETL_EXCEPTION_HPP__

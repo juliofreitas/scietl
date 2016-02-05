@@ -20,27 +20,49 @@
  */
 
 /*!
-  \file scietl/focos2scidb/Exception.hpp
+  \file scietl/core/GDALWrapper.hpp
 
-  \brief Base exception class for focos2scidb.
+  \brief Simple wrapper classes around GDAL datatypes in order to avoid resource leaks.
 
   \author Gilberto Ribeiro de Queiroz
  */
 
-#ifndef __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
-#define __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#ifndef __SCIETL_CORE_GDALWRAPPER_HPP__
+#define __SCIETL_CORE_GDALWRAPPER_HPP__
 
-// SciETL
-#include "../Exception.hpp"
+// GDAL
+#include <gdal.h>
 
 namespace scietl
 {
-  namespace focos2scidb
+  namespace core
   {
-    //! Base exception class for focos2scidb.
-    struct exception: virtual scietl::exception { };
+
+    class GDALDatasetPtr
+    {
+      public:
+  
+        GDALDatasetPtr(GDALDatasetH dataset)
+          : dataset_(dataset)
+        {
+        }
     
-  }  // end namespace focos2scidb
+        ~GDALDatasetPtr()
+        {
+          GDALClose(dataset_);
+        }
+
+        operator GDALDatasetH() const
+        {
+          return dataset_;
+        }
+    
+      private:
+  
+        GDALDatasetH dataset_;
+    };
+    
+  }  // end namespace core
 }    // end namespace scietl
 
-#endif // __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#endif // __SCIETL_CORE_GDALWRAPPER_HPP__

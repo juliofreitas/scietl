@@ -172,6 +172,8 @@ configure_file(${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/Version.hpp.in
 # build modules
 #
 
+add_subdirectory(scietl_core)
+
 if(SCIETL_MODIS2SCIDB_ENABLED)
   add_subdirectory(scietl_modis2scidb)
 endif()

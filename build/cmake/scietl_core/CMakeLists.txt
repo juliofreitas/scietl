@@ -18,7 +18,7 @@
 #  along with SciETL. See LICENSE. If not, write to
 #  e-sensing team at <esensning-team@dpi.inpe.br>.
 #
-#  Description: CMake script for focos2scidb tool.
+#  Description: CMake script for core runtime module.
 #
 #  Author: Gilberto Ribeiro de Queiroz
 #
@@ -26,25 +26,11 @@
 include_directories(${Boost_INCLUDE_DIR})
 include_directories(${GDAL_INCLUDE_DIR})
 
-file(GLOB SCIETL_SRC_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/focos2scidb/*.cpp)
-file(GLOB SCIETL_HDR_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/focos2scidb/*.hpp)
+file(GLOB SCIETL_SRC_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/core/*.cpp)
+file(GLOB SCIETL_HDR_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/core/*.hpp)
 
 source_group("Source Files"  FILES ${SCIETL_SRC_FILES})
 source_group("Header Files"  FILES ${SCIETL_HDR_FILES})
 
-add_executable(focos2scidb ${SCIETL_HDR_FILES} ${SCIETL_SRC_FILES})
+add_library(scietl_core STATIC ${SCIETL_HDR_FILES} ${SCIETL_SRC_FILES})
 
-target_link_libraries(focos2scidb scietl_core
-                                  ${Boost_SYSTEM_LIBRARY}
-                                  ${Boost_DATE_TIME_LIBRARY}
-                                  ${Boost_CHRONO_LIBRARY}
-                                  ${Boost_TIMER_LIBRARY}
-                                  ${Boost_FILESYSTEM_LIBRARY}
-                                  ${Boost_PROGRAM_OPTIONS_LIBRARY}
-                                  ${GDAL_LIBRARY})
-
-install(TARGETS focos2scidb
-        EXPORT scietl-targets
-        RUNTIME DESTINATION ${SCIETL_DESTINATION_RUNTIME} COMPONENT runtime
-        LIBRARY DESTINATION ${SCIETL_DESTINATION_LIBRARY} COMPONENT runtime
-        ARCHIVE DESTINATION ${SCIETL_DESTINATION_ARCHIVE} COMPONENT runtime)

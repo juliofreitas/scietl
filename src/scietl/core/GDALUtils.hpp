@@ -20,27 +20,34 @@
  */
 
 /*!
-  \file scietl/focos2scidb/Exception.hpp
+  \file scietl/core/GDALUtils.hpp
 
-  \brief Base exception class for focos2scidb.
+  \brief Utility functions for dealing with GDAL and SciDB.
 
   \author Gilberto Ribeiro de Queiroz
  */
 
-#ifndef __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
-#define __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#ifndef __SCIETL_GDALUTILS_HPP__
+#define __SCIETL_GDALUTILS_HPP__
 
-// SciETL
-#include "../Exception.hpp"
+// GDAL
+#include <gdal.h>
+
+// STL
+#include <cstddef>
 
 namespace scietl
 {
-  namespace focos2scidb
+  namespace core
   {
-    //! Base exception class for focos2scidb.
-    struct exception: virtual scietl::exception { };
+    /*!
+      \brief Compute the number of bytes for a given GDAL data type.
+
+      \exception scietl::conversion_error If we don't know the given GDAL data type size.
+     */
+    std::size_t num_bytes(GDALDataType dt);
     
-  }  // end namespace focos2scidb
+  }  // end namespace core
 }    // end namespace scietl
 
-#endif // __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#endif // __SCIETL_GDALUTILS_HPP__
