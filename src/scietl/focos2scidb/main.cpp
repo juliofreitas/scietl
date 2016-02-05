@@ -214,16 +214,14 @@ void convert(const input_arguments& args)
     std::cout << "\n\tsaving data... " << std::flush;
   }
   
-  boost::filesystem::path input_file(args.source_file_name);
-  
   std::ofstream f(args.target_file_name.c_str(), std::ios::binary);
-  
+
   if(!f.is_open())
   {
-    boost::format err_msg("could not create file: '%1%'!");
+    boost::format err_msg("could not create file: '%1%'. Please, check if target file or dir exist.");
     throw scietl::gdal_error() << scietl::error_description((err_msg % args.target_file_name).str());
   }
-  
+
   unsigned char* bookmark = buffer.get();
 
   for(int i = 0; i != nrows; ++i)

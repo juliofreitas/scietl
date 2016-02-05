@@ -44,6 +44,29 @@ $ ./srtm2scidb S34W054.hgt name.scidb
 
 See [SRTM to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/srtm2scidb-user-manual.txt) for more information on it.
 
+## focos2scidb
+
+focos2scidb is a command line application for converting Fire Spot data into SciDB multidimensional arrays.
+```
+focos2scidb [--version] [--help] --f <source-file> --o <output-file> --t <time-point>
+```
+
+It accepts the following options:
+- ```--version```: Prints FOCOS to SciDB conversion tool version.
+- ```--verbose```: Turns on verbose mode: prints timing and some more information about the conversion progress.
+- ```--help```: Prints help message.
+- ```--f```: The source GeoTIFF file.
+- ```--t```: The time point in the timeline. A number starting from 0.
+- ```--o```: The output file name.
+
+Example:
+```
+$ ./focos2scidb --f 2000_01_grd5km_focos_referencia.tif --o 2000_01_grd5km_focos_referencia.scidb --t 1
+```
+
+See [MODIS to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/modis2scidb-user-manual.txt) for more information on it.
+
+
 ## modis2scidb-loader
 
 modis2scidb-loader is a Python command line application for orchestrating the load of a set of MODIS HDF data into SciDB multidimensional arrays. These scripts are available in the [py-tools folder](https://github.com/e-sensing/scietl/tree/master/py-tools).
