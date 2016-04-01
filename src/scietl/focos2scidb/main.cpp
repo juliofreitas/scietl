@@ -109,12 +109,29 @@ int main(int argc, char **argv)
     valid_args(parsed_args);
     
     if(parsed_args.verbose)
-      std::cout << "\nfocos2scidb started\n" << std::endl;
+      std::cout << "focos2scidb started" << std::endl;
     
     convert(parsed_args);
     
+    const boost::timer::cpu_times elapsed_times(timer.elapsed());
+    
+    //const boost::timer::nanosecond_type elapsed = elapsed_times.wall;
+    
     if(parsed_args.verbose)
-      std::cout << "\n\nfocos2scidb finished successfully!\n" << std::endl;
+    {
+      //const boost::timer::nanosecond_type one_second(1 * 1000000000LL);
+      
+      std::cout << "\telapsed time: " << boost::timer::format(elapsed_times, 3, "%ws wall") << std::endl;
+      
+      std::cout << "focos2scidb finished successfully!\n" << std::endl;
+    }
+  }
+  catch(const scietl::exception& e)
+  {
+    if(const std::string* d = boost::get_error_info<scietl::error_description>(e))
+      std::cerr << "\nThe following error ocurried: " << *d << "\n";
+    
+    return EXIT_FAILURE;
   }
   catch(const std::exception& e)
   {
@@ -155,7 +172,7 @@ void valid_args(input_arguments& args)
 void convert(const input_arguments& args)
 {
   if(args.verbose)
-    std::cout << "\n\tbuffering data... " << std::flush;
+    std::cout << "\tbuffering data... " << std::flush;
   
   scietl::core::GDALDatasetPtr dataset(GDALOpen(args.source_file_name.c_str(), GA_ReadOnly));
   
@@ -210,8 +227,8 @@ void convert(const input_arguments& args)
   
   if(args.verbose)
   {
-    std::cout << "OK!" << std::flush;
-    std::cout << "\n\tsaving data... " << std::flush;
+    std::cout << "OK!" << std::endl;
+    std::cout << "\tsaving data... " << std::flush;
   }
   
   std::ofstream f(args.target_file_name.c_str(), std::ios::binary);
@@ -222,7 +239,7 @@ void convert(const input_arguments& args)
     throw scietl::gdal_error() << scietl::error_description((err_msg % args.target_file_name).str());
   }
 
-  unsigned char* bookmark = buffer.get();
+  unsigned char* buffer_mark = buffer.get();
 
   for(int i = 0; i != nrows; ++i)
   {
@@ -235,11 +252,14 @@ void convert(const input_arguments& args)
       f.write(reinterpret_cast<char*>(&col), sizeof(int16_t));
       f.write(reinterpret_cast<char*>(&row), sizeof(int16_t));
       f.write(reinterpret_cast<char*>(&t), sizeof(int16_t));
-      f.write(reinterpret_cast<char*>(bookmark), pixel_size);
+      f.write(reinterpret_cast<char*>(buffer_mark), pixel_size);
       
-      bookmark += pixel_size;
+      buffer_mark += pixel_size;
     }
   }
   
   f.close();
+  
+  if(args.verbose)
+    std::cout << "OK!" << std::endl;
 }
