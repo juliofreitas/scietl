@@ -26,29 +26,66 @@
 #
 
 import argparse
+import datetime
 import os
+import re
 import subprocess
 
 #
 # change this for fine tuning
 #
 scidb_cluster_name = "focos"
-monthly_start_date = "2000-01-01";
+monthly_start_date = "2000-01";
 daily_start_date = "2014-01-01";
 
-def extract_time_point_from_monthly_data(file_name):
-    year = file_name[0:4]
-    month = file_name[5:7]
-    day = "01"
 
-    return year, month, day
+def compute_monthly_time_index(year, month, initial_year, initial_month):
+    """Compute..."""
+
+    dyear = year - initial_year;
+
+    dmonth = month if dyear == 0 else month - initial_month
+
+    time_index = 12 * dyear + dmonth
+
+    return time_index
+
+
+def extract_time_point_from_monthly_data(file_name):
+    """Compute..."""
+
+    if len(file_name) < 7:
+        print("Invalid file format: '{0}'.\nCould not extract date information!".format(file_name))
+        exit(1)
+
+    year = int(file_name[0:4])
+    month = int(file_name[5:7])
+
+    time_index = compute_monthly_time_index(year, month, int(monthly_start_date[0:4]), int(monthly_start_date[5:7]))
+
+    return time_index
+
 
 def extract_time_point_from_daily_data(file_name):
-    year = file_name[0:4]
-    month = file_name[4:6]
-    day = file_name[6:8]
+    """Compute..."""
 
-    return year, month, day
+    if len(file_name) < 8:
+        print("Invalid file format: '{0}'.\nCould not extract date information!".format(file_name))
+        exit(1)
+
+    year = int(file_name[0:4])
+    month = int(file_name[4:6])
+    day = int(file_name[6:8])
+
+    iyear = int(daily_start_date[0:4])
+    imonth = int(daily_start_date[5:7])
+    iday = int(daily_start_date[8:10])
+
+    time_delta = datetime.date(year, month, day) - datetime.date(iyear, imonth, iday)
+
+    time_index = time_delta.days()
+
+    return time_index
 
 
 if __name__ == '__main__':
@@ -83,11 +120,19 @@ if __name__ == '__main__':
 
         input_file_dir, input_file_name = os.path.split(fire_file)
 
+        match_montly = re.match(r"[0-9]{4}_[0-9]{2}", input_file_name)
+
+        match_daily = re.match(r"[0-9]{8}", input_file_name)
+
+        if(not match_montly and not match_daily):
+            print("Error: file '{0}' is not montly nor daily focos data!".format(fire_file))
+            exit(1)
+
         outfile_name = os.path.join(output_dir, input_file_name.replace(".tif", ".scidb"))
 
-        time_point = extract_time_point_from_monthly_data(input_file_name) if product == "m" else extract_time_point_from_daily_data(input_file_name)
+        time_index = extract_time_point_from_monthly_data(input_file_name) if product == "m" else extract_time_point_from_daily_data(input_file_name)
 
-        focos2scidb_cmd = "focos2scidb --f {0} --o {1} --t {2}".format(fire_file, outfile_name, time_point[2])
+        focos2scidb_cmd = "focos2scidb --f {0} --o {1} --t {2} --verbose".format(fire_file, outfile_name, time_index)
 
         #print(focos2scidb_cmd)
 
