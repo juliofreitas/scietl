@@ -32,14 +32,22 @@ import re
 import subprocess
 
 #
+# Requirements for the script execution:
+# - CREATE ARRAY fire_risk_montlhy <value:uint8>[col=0:1020,1,0, row=0:1380,1381,0, time_idx=0:*,1,0];
+#   or
+#   CREATE ARRAY fire_risk_daily <value:uint8>[col=0:1020,1,0, row=0:1380,1381,0, time_idx=0:*,1,0];
+# 
+#
+
+#
 # change this for fine tuning
 #
 scidb_cluster_name = "focos"
 monthly_start_date = "2000-01";
 daily_start_date = "2014-01-01";
-create_1d_array_cmd = "iquery -naq \"CREATE ARRAY fire_risk_1d_tmp <col_id:int16, row_id:int16, time_id:int16, v:uint16> [i=0:*,1410001];\""
+create_1d_array_cmd = "iquery -naq \"CREATE ARRAY fire_risk_1d_tmp <col:int16, row:int16, time_idx:int16, value:uint8> [i=0:*,1410001,0];\""
 tmp_array_1d = "fire_risk_1d_tmp"
-tmp_array_data_format = "'(int16, int16, int16, uint16)'"
+tmp_array_data_format = "'(int16, int16, int16, uint8)'"
 array_3d_montlhy_name = "fire_risk_montlhy"
 array_3d_daily_name = "fire_risk_daily"
 
@@ -136,6 +144,7 @@ if __name__ == '__main__':
 
     for fire_file in fire_spot_files:
 
+# extrac file name and select chronon
         input_file_dir, input_file_name = os.path.split(fire_file)
 
         match_montly = re.match(r"[0-9]{4}_[0-9]{2}", input_file_name)
@@ -150,6 +159,15 @@ if __name__ == '__main__':
 
         time_index = extract_time_point_from_monthly_data(input_file_name) if match_montly else extract_time_point_from_daily_data(input_file_name)
 
+# remove old binary file from target directory
+        remove_old_bin_file_cmd = "rm {0}".format(outfile_name)
+
+        retcode = subprocess.call(remove_old_bin_file_cmd, shell=True)
+
+        if retcode == 0:
+            print("Old file '{0}' removed. Generating new binary file... ".format(outfile_name))
+
+# convert TIFF to SciDB binary
         focos2scidb_cmd = "focos2scidb --f {0} --o {1} --t {2} --verbose".format(fire_file, outfile_name, time_index)
 
         retcode = subprocess.call(focos2scidb_cmd, shell=True)
@@ -158,13 +176,20 @@ if __name__ == '__main__':
             print("Error converting file '{0}' to {1}.".format(fire_file, outfile_name))
             exit(1);
 
+# remove old 1D temporary array if any
+        drop_temp_1d_array_cmd = "iquery -naq \"remove({0});\"".format(tmp_array_1d)
+
+        subprocess.call(drop_temp_1d_array_cmd, shell=True)
+
+# create temporary 1D array
         retcode = subprocess.call(create_1d_array_cmd, shell=True)
 
         if retcode != 0:
             print("Error creating temporary 1D array: '{0}'.".format(create_1d_array_cmd))
             exit(1);
 
-        load_data_in_1d_array_cmd = "iquery -naq \"load({0}, {1}, -2, {2});\"".format(tmp_array_1d, outfile_name, tmp_array_data_format)
+# Load data to 1D temporary array
+        load_data_in_1d_array_cmd = "iquery -naq \"load({0}, '{1}', -2, {2});\"".format(tmp_array_1d, outfile_name, tmp_array_data_format)
 
         retcode = subprocess.call(load_data_in_1d_array_cmd, shell=True)
 
@@ -172,22 +197,15 @@ if __name__ == '__main__':
             print("Error loading file '{0}' to array 1D '{1}'.".format(outfile_name, tmp_array_1d))
             exit(1);
 
+# Insert data from temporary 1D to 3D
         array_3d = array_3d_montlhy_name if match_montly else array_3d_daily_name
 
-        load_data_in_3d_array_cmd = "iquery -naq \"insert(redimension(apply({3}, col, int64(col_id), row, int64(row_id), time_idx, int64(time_id), value, v), {1}), {0});\"".format(array_3d, array_3d, tmp_array_1d)
+        load_data_in_3d_array_cmd = "iquery -naq \"insert(redimension({2}, {1}), {0});\"".format(array_3d, array_3d, tmp_array_1d)
 
         retcode = subprocess.call(load_data_in_3d_array_cmd, shell=True)
 
         if retcode != 0:
             print("Error converting 1D array '{0}' to 3D array '{1}'.".format(tmp_array_1d, array_3d))
-            exit(1);
-
-        drop_temp_1d_array_cmd = "iquery -naq \"remove({0});\"".format(tmp_array_1d)
-
-        retcode = subprocess.call(drop_temp_1d_array_cmd, shell=True)
-
-        if retcode != 0:
-            print("Error dropping 1D array '{0}'.".format(tmp_array_1d))
             exit(1);
 
     print("Converting risk-fire data... finished!")

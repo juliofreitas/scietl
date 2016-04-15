@@ -246,7 +246,7 @@ void convert(const input_arguments& args)
     for(int j = 0; j != ncols; ++j)
     {
       int16_t col = static_cast<int16_t>(j);
-      int16_t row = static_cast<int16_t>(j);
+      int16_t row = static_cast<int16_t>(i);
       int16_t t = args.time_point;
       
       f.write(reinterpret_cast<char*>(&col), sizeof(int16_t));
