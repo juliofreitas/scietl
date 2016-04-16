@@ -33,7 +33,7 @@ import subprocess
 
 #
 # Requirements for the script execution:
-# - CREATE ARRAY fire_risk_montlhy <value:uint8>[col=0:1020,1,0, row=0:1380,1381,0, time_idx=0:*,1,0];
+# - CREATE ARRAY fire_risk_monthly <value:uint8>[col=0:1020,1,0, row=0:1380,1381,0, time_idx=0:*,1,0];
 #   or
 #   CREATE ARRAY fire_risk_daily <value:uint8>[col=0:1020,1,0, row=0:1380,1381,0, time_idx=0:*,1,0];
 # 
@@ -48,7 +48,7 @@ daily_start_date = "2014-01-01";
 create_1d_array_cmd = "iquery -naq \"CREATE ARRAY fire_risk_1d_tmp <col:int16, row:int16, time_idx:int16, value:uint8> [i=0:*,1410001,0];\""
 tmp_array_1d = "fire_risk_1d_tmp"
 tmp_array_data_format = "'(int16, int16, int16, uint8)'"
-array_3d_montlhy_name = "fire_risk_montlhy"
+array_3d_monthly_name = "fire_risk_monthly"
 array_3d_daily_name = "fire_risk_daily"
 
 
@@ -197,7 +197,7 @@ if __name__ == '__main__':
             exit(1);
 
 # Insert data from temporary 1D to 3D
-        array_3d = array_3d_montlhy_name if match_montly else array_3d_daily_name
+        array_3d = array_3d_monthly_name if match_montly else array_3d_daily_name
 
         load_data_in_3d_array_cmd = "iquery -naq \"insert(redimension({2}, {1}), {0});\"".format(array_3d, array_3d, tmp_array_1d)
 
