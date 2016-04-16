@@ -52,14 +52,13 @@ array_3d_montlhy_name = "fire_risk_montlhy"
 array_3d_daily_name = "fire_risk_daily"
 
 
-def compute_monthly_time_index(year, month, initial_year, initial_month):
-    """Compute..."""
+def compute_monthly_time_index(year, month, initial_year):
+    """Compute the time index for a monthly file.
+       Time index start at 1 for initial_year."""
 
     dyear = year - initial_year;
 
-    dmonth = month if dyear == 0 else month - initial_month
-
-    time_index = 12 * dyear + dmonth
+    time_index = 12 * dyear + month
 
     return time_index
 
@@ -74,7 +73,7 @@ def extract_time_point_from_monthly_data(file_name):
     year = int(file_name[0:4])
     month = int(file_name[5:7])
 
-    time_index = compute_monthly_time_index(year, month, int(monthly_start_date[0:4]), int(monthly_start_date[5:7]))
+    time_index = compute_monthly_time_index(year, month, int(monthly_start_date[0:4]))
 
     return time_index
 
