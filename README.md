@@ -1,21 +1,24 @@
 # SciETL
 Extract, Transform and Load of Geospatial Data for SciDB
 
-Right now we have some command line tools for converting common Earth Observation datasets to spatio-temporal arrays in SciDB:
+SciETL is a set of command line tools for data conversion and a set of Python scripts for data ingestion into SciDB.
+
+Threre are three command line tools for converting common Earth Observation datasets to spatio-temporal arrays in SciDB:
 - **modis2scidb:** a command line application for converting **MODIS HDF** data to a binary format that can be used to load data to a SciDB 1D-array.
 
 - **fire2scidb:** a command line application for converting **Fire Data Products** to a binary format that can be used to load data to a SciDB 1D-array.
 
 - **srtm2scidb:** a command line application for converting **SRTM HGT** data to a binary format that can be used to load data to a SciDB 1D-array.
 
-We have also made available some Python scripts for orchestrating the data conversion from above products and the data ingestion to a multidimensional array in SciDB:
-- **modis2scidb-loader:** a Python command line application for orchestrating the load of a set of MODIS HDF data into a SciDB multidimensional array. These scripts are available in the [py-tools folder](https://github.com/e-sensing/scietl/tree/master/py-tools/modis2scidb-loader).
+There are two Python scripts for orchestrating the data conversion from above products and the data ingestion to a multidimensional array in SciDB:
+- **modis2scidb-loader:** a Python command line application for orchestrating the load of a set of MODIS HDF data into a SciDB multidimensional array.
 
-- **fire2scidb-loader:** a Python command line application for orchestrating the load of a set of Fire Data Products into a SciDB multidimensional array. These scripts are available in the [py-tools folder](https://github.com/e-sensing/scietl/tree/master/py-tools/fire2scidb-loader).
+- **fire2scidb-loader:** a Python command line application for orchestrating the load of a set of Fire Data Products into a SciDB multidimensional array.
 
----
 
-## Using SciETL
+# Using SciETL
+
+## Command Line Tools for Data Conversion
 
 ### modis2scidb
 
@@ -44,7 +47,6 @@ $ ./modis2scidb --f MOD13Q1.A2002241.h13v10.005.2008248173553.hdf --o mod13q1-1d
 
 See [MODIS to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/modis2scidb-user-manual.txt) for more information on it.
 
----
 
 ### fire2scidb
 
@@ -70,7 +72,6 @@ $ ./fire2scidb --f 2000_01_grd5km_focos_referencia.tif --o 2000_01_grd5km_focos_
 
 See [Fire to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/fire2scidb-user-manual.txt) for more information on it.
 
----
 
 ### srtm2scidb
 
@@ -88,7 +89,8 @@ $ ./srtm2scidb S34W054.hgt name.scidb
 
 See [SRTM to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/srtm2scidb-user-manual.txt) for more information on it.
 
----
+
+## Python Script for Loading Data into SciDB
 
 ### fire2scidb-loader
 
@@ -125,9 +127,8 @@ CREATE ARRAY hotspot_risk_daily <measure:uint8>[col=1:5157,1,0, row=1:5796,5796,
 CREATE ARRAY hotspot_risk_monthly <high_risk:uint8, low_risk:uint8, medium_risk:uint8>[col=1:5300,1325,0, row=1:6600,1650,0, time_idx=1:*,1,0];
 ```
 
-These scripts are available in the [py-tools folder](https://github.com/e-sensing/scietl/tree/master/py-tools/fire2scidb-loader).
+This script is available in the folder [py-tools/fire2scidb-loader](https://github.com/e-sensing/scietl/tree/master/py-tools/fire2scidb-loader).
 
----
 
 ### modis2scidb-loader
 
@@ -165,9 +166,9 @@ $ mv /home/scidb/MOD09Q1.A2000049.h10v08.005.2006268191328.sdbbin /home/scidb/to
 ```
 - Alternatively, you can use *run.py* to make calls to *addHdfs2bin.py* on many HDFs.
 
----
+These scripts are available in the folder [py-tools/modis2scidb-loader](https://github.com/e-sensing/scietl/tree/master/py-tools/modis2scidb-loader).
 
-## Source Code Instructions
+# Source Code Instructions
 
 In the root directory of SciETL codebase (the source code tree) there are some text files explaining the details of the codebase:
 
@@ -185,9 +186,8 @@ In the root directory of SciETL codebase (the source code tree) there are some t
 
 If you want to build SciETL from source, first take a look at the section **Dependencies** (below in this document) and read the right tip for automatically building the dependencies in your platform.
 
----
 
-## Source Code Organization
+# Source Code Organization
 
 - **[build/cmake:](https://github.com/e-sensing/scietl/tree/master/build/cmake)** Contains the CMake scripts with commands, macros and functions used to build the environment for compiling libraries and executables in different platforms using the CMake tool.
  
@@ -199,9 +199,8 @@ If you want to build SciETL from source, first take a look at the section **Depe
 
 - **[src:](https://github.com/e-sensing/scietl/tree/master/src)** Contains the source code of SciETL and its automatic test system.
 
----
 
-## Dependencies
+# Third-Party Dependencies
 
 The file named **[DEPENDENCIES](https://github.com/e-sensing/scietl/blob/master/DEPENDENCIES)** in the root of SciETL source tree contains the official list of third-party libraries and tools that you must install before building SciETL from source.
 
@@ -214,7 +213,7 @@ If you want to build yourself SciETL then you need to install some third-party l
 
 - **pyhdf (Mandatory):** **TODO**.
  
-### Bash script for building all dependencies on Linux Ubuntu 14.04
+## Bash script for building all dependencies on Linux Ubuntu 14.04
 
 We have prepared a special bash script for building and installing the dependencies on Linux Ubuntu 14.04. This script can be found in SciETL source tree under *install* folder. Follow the steps below:
 
@@ -229,9 +228,8 @@ $ SCIETL_DEPENDENCIES_DIR="/home/user/mylibs" ./install-3rdparty-linux-ubuntu-14
 
 **Note:** Don't choose as target location a system folder such as */usr* or */usr/local*. Try some user specific folder. The best suggestion is to replace the folder named *user* by your user name.
 
----
 
-## Cloning SciETL Repository
+# Cloning SciETL Repository
 
 - Open the shell command line.
 
@@ -249,9 +247,11 @@ $ cd /home/user/mydevel/scietl/codebase
 ```
 $ git clone https://github.com/e-sensing/scietl.git .
 ```
----
 
-## Branches
+# Branches
+
+**Note:** We have only one branch: master. This is just a remainder on how to use branches.
+
 You can check all branches available (remotes and local) and see the current one (marked with "*"):
 
 `$ git branch -a`
@@ -272,13 +272,14 @@ To switch to one of the branches listed above, use the checkout command and crea
 
 `$ git checkout -b <local_branch_name> <remote_branch_name without this part "remotes/">`
 
-In order to switch to branch *b-1.0.0-alpha* you can use the following command:
+For example, if you want to switch to branch *b-1.0.0-alpha* you can use the following command:
 
 `$ git checkout -b b-1.0.0-alpha origin/b-1.0.0-alpha`
 
----
 
-## Tags
+# Tags
+
+**Note:** We don't have any tags yet. This is just a remainder on how to use tags.
 
 Also there are tags which usually are originated from a release branch. For instance, tag *t-1.0.0-alpha1* will be originated from branch *b-1.0.0-alpha*.
 
@@ -302,9 +303,8 @@ For instance, to checkout *t-1.0.0-alpha1* you can enter the following command:
 
 `$ git checkout -b t-1.0.0-alpha1  t-1.0.0-alpha1`
 
----
 
-## Build Instructions
+# Build Instructions
 
 After choosing the right branch or tag to work on, follow the instructions on **DEPENDENCIES** section. Make sure you have all the third-party library dependencies listed in this section before trying to build SciETL.
 
@@ -317,9 +317,8 @@ You should use at least CMake version 2.8.12 for building SciETL. Older versions
 
 Follow the build steps below according to your platform.
 
----
 
-### Building on Linux with GNU G++
+## Building on Linux with GNU G++
 
 1.1. Open a Command Prompt (Shell).
 
@@ -372,9 +371,7 @@ Notes:
   -DCMAKE_BUILD_TYPE:STRING="Debug"
 ```
 
----
-
-### Quick Notes for Developers
+# Quick Notes for Developers
 
 If you have built SciETL in Debug mode and you want to run it inside the build tree, you may need to set some environment variables:
 * For Mac OS X, you can set the following variables:
@@ -402,13 +399,14 @@ If you have experienced  any problem building any of the third-party tool on Mac
 ```
 $ xcode-select --install
 ```
----
 
-## Reporting Bugs
+
+# Reporting Bugs
 
 Any problem should be reported to esensing-team@dpi.inpe.br.
 
----
+
+# Contact
 
 For more information on SciETL, please, visit e-Sensing project main web page at: http://www.esensing.org.
 
