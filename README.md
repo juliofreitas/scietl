@@ -98,12 +98,12 @@ See [SRTM to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/s
 
 Command Syntax
 ```
-$ python fire2scidb-loader.py ...
+$ python fire2scidb-loader.py -d <input-dir> -o <output-dir>
 ```
 
 Example:
 ```
-$ python fire2scidb-loader.py ...
+$ python fire2scidb-loader.py -d /home/gribeiro/mydata/tiffs -o /home/gribeiro/mydata/scidb
 ```
 
 Some requirements for running the script:
@@ -119,12 +119,12 @@ CREATE ARRAY hotspot_monthly <measure:uint8>[col=0:1020,1,0, row=0:1380,1381,0, 
 
 - If you want to load the data with observed daily risk of fire, you will need a target array named **hotspot_risk_daily** with the following definition:
 ```
-CREATE ARRAY hotspot_risk_daily <measure:uint8>[col=1:5157,1,0, row=1:5796,5796,0, time_idx=1:*,1,0];
+CREATE ARRAY hotspot_risk_daily <measure:uint8>[col=0:5156,5157,0, row=0:5795,483,0, time_idx=1:*,1,0];
 ```
 
 - If you want to load the data with monthly prevalent risk of fire, you will need a target array named **hotspot_risk_monthly** with the following definition:
 ```
-CREATE ARRAY hotspot_risk_monthly <high_risk:uint8, low_risk:uint8, medium_risk:uint8>[col=1:5300,1325,0, row=1:6600,1650,0, time_idx=1:*,1,0];
+CREATE ARRAY hotspot_risk_monthly <high_risk:uint8, low_risk:uint8, medium_risk:uint8>[col=0:5299,1325,0, row=0:6599,1650,0, time_idx=1:*,1,0];
 ```
 
 This script is available in the folder [py-tools/fire2scidb-loader](https://github.com/e-sensing/scietl/tree/master/py-tools/fire2scidb-loader).

@@ -20,14 +20,14 @@
  */
 
 /*!
-  \file scietl/focos2scidb/main.cpp
+  \file scietl/fire2scidb/main.cpp
 
   \brief Focus to SciDB multidimensional array conversion tool.
 
   \author Gilberto Ribeiro de Queiroz
  */
 
-// Focos2SciDB
+// fire2scidb
 #include "Exception.hpp"
 
 // SciETL
@@ -73,13 +73,13 @@ int main(int argc, char **argv)
     
     input_arguments parsed_args;
     
-    boost::program_options::options_description options_all("Fire Points to SciDB's Multidimensional Array Conversion Options");
+    boost::program_options::options_description options_all("Fire Data Products to SciDB's Binary Load Format Conversion Options");
     
     options_all.add_options()
-    ("version", "Print Fire Points to SciDB conversion tool version.\n")
-    ("help", "Prints help message.\n")
+    ("version", "Print fire2scidb conversion tool version.\n")
     ("verbose", "Turns on verbose mode: prints timing and some more information about the conversion progress.\n")
-    ("f", boost::program_options::value<std::string>(&parsed_args.source_file_name), "The source TIFF file to convert to SciDB's load format.\n")
+    ("help", "Prints help message.\n")
+    ("f", boost::program_options::value<std::string>(&parsed_args.source_file_name), "The source fire data product file to convert to SciDB's load format.\n")
     ("o", boost::program_options::value<std::string>(&parsed_args.target_file_name), "The target folder to store SciDB data file.\n")
     ("t", boost::program_options::value<int16_t>(&parsed_args.time_point), "The timeline position for the dataset.\n")
     ;
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     
     if(options.count("version"))
     {
-      std::cout << "\n\nfocos2scidb version: " SCIETL_VERSION_STRING "\n" << std::endl;
+      std::cout << "\n\nfire2scidb version: " SCIETL_VERSION_STRING "\n" << std::endl;
       
       return EXIT_SUCCESS;
     }
@@ -109,21 +109,18 @@ int main(int argc, char **argv)
     valid_args(parsed_args);
     
     if(parsed_args.verbose)
-      std::cout << "focos2scidb started" << std::endl;
+      std::cout << "fire2scidb started" << std::endl;
     
     convert(parsed_args);
     
     const boost::timer::cpu_times elapsed_times(timer.elapsed());
     
-    //const boost::timer::nanosecond_type elapsed = elapsed_times.wall;
-    
     if(parsed_args.verbose)
     {
-      //const boost::timer::nanosecond_type one_second(1 * 1000000000LL);
       
       std::cout << "\telapsed time: " << boost::timer::format(elapsed_times, 3, "%ws wall") << std::endl;
       
-      std::cout << "focos2scidb finished successfully!\n" << std::endl;
+      std::cout << "fire2scidb finished successfully!\n" << std::endl;
     }
   }
   catch(const scietl::exception& e)
@@ -135,7 +132,7 @@ int main(int argc, char **argv)
   }
   catch(const std::exception& e)
   {
-    std::cerr << "\n\nfocos2scidb finished with errors!\n";
+    std::cerr << "\n\nfire2scidb finished with errors!\n";
     
     if(e.what() != 0)
       std::cerr << "\nAn unexpected error has occurried: " << e.what() << "\n";
@@ -157,10 +154,10 @@ int main(int argc, char **argv)
 void valid_args(input_arguments& args)
 {
   if(args.source_file_name.empty())
-    throw scietl::invalid_arg_value() << scietl::error_description("missing input GeoTIFF file name!");
+    throw scietl::invalid_arg_value() << scietl::error_description("missing input file name!");
   
   if(!boost::filesystem::exists(args.source_file_name))
-    throw scietl::invalid_dir_error() << scietl::error_description("could not find input GeoTIFF file!");
+    throw scietl::invalid_dir_error() << scietl::error_description("could not find input file!");
   
   if(args.target_file_name.empty())
     throw scietl::invalid_arg_value() << scietl::error_description("missing output file name!");
@@ -172,8 +169,9 @@ void valid_args(input_arguments& args)
 void convert(const input_arguments& args)
 {
   if(args.verbose)
-    std::cout << "\tbuffering data... " << std::flush;
+    std::cout << "\tbuffering data...\n" << std::flush;
   
+// let's try to open the dataset
   scietl::core::GDALDatasetPtr dataset(GDALOpen(args.source_file_name.c_str(), GA_ReadOnly));
   
   if(dataset == nullptr)
@@ -182,55 +180,88 @@ void convert(const input_arguments& args)
     throw scietl::gdal_error() << scietl::error_description((err_msg % args.source_file_name).str());
   }
   
-  if(GDALGetRasterCount(dataset) != 1)
+// does the raster have at least one data band?
+  int nbands = GDALGetRasterCount(dataset);
+  
+  if(nbands < 1)
   {
-    boost::format err_msg("invalid raster data: %1%. It must have only one data band!");
+    boost::format err_msg("invalid raster data: %1%. It must have at least one data band!");
     throw scietl::gdal_error() << scietl::error_description((err_msg % args.source_file_name).str());
   }
+
+// for each data band, we will buffer its whole data
+  std::vector<boost::shared_array<unsigned char> > data_bands;
+  std::vector<std::size_t> pixel_size_bands;
+  std::vector<std::pair<int, int> > band_dimensions;
   
-  GDALRasterBandH band = GDALGetRasterBand(dataset, 1);
+  for(int i = 1; i <= nbands; ++i)
+  {
+    GDALRasterBandH band = GDALGetRasterBand(dataset, 1);
     
-  if(band == 0)
-  {
-    boost::format err_msg("could not access band data for file: %1%!");
-    throw scietl::gdal_error() << scietl::error_description((err_msg % args.source_file_name).str());
+    if(band == 0)
+    {
+      boost::format err_msg("could not access data band '%1%' for file: %2%!");
+      throw scietl::gdal_error() << scietl::error_description((err_msg % i % args.source_file_name).str());
+    }
+
+// get band dimensions and pixel infromation
+    int ncols = GDALGetRasterBandXSize(band);
+    int nrows = GDALGetRasterBandYSize(band);
+    
+    band_dimensions.push_back(std::make_pair(ncols, nrows));
+    
+    GDALDataType pixel_type = GDALGetRasterDataType(band);
+    
+    std::size_t pixel_size = scietl::core::num_bytes(pixel_type);
+    
+    pixel_size_bands.push_back(pixel_size);
+
+// allocate a buffer for the band
+    boost::shared_array<unsigned char> buffer(new unsigned char[ncols * nrows * pixel_size]);
+    
+    if(args.verbose)
+    {
+      std::cout << "\t\t#band: " << i << "; #cols: " << ncols << "; #rows: "
+      << nrows << "; pixel-size: " << pixel_size << "byte(s); data-size: "
+      << (static_cast<double>(ncols * nrows * pixel_size) / static_cast<double>(1024*1024))
+      << " MiB... " << std::flush;
+    }
+
+// read the band data to the buffer
+    CPLErr result = GDALRasterIO(band, GF_Read, 0, 0, ncols, nrows, buffer.get(), ncols, nrows, pixel_type, 0, 0);
+  
+    if(result == CE_Failure)
+    {
+      boost::format err_msg("could not read band '%1%' for dataset: '%2%'!");
+      throw scietl::gdal_error() << scietl::error_description((err_msg % i % args.source_file_name).str());
+    }
+
+// keep the band data buffer in a list (actually a vector!)
+    data_bands.push_back(buffer);
+    
+    if(args.verbose)
+      std::cout << "OK!\n" << std::endl;
   }
-  
-  int ncols = GDALGetRasterBandXSize(band);
-  int nrows = GDALGetRasterBandYSize(band);
-  
-  if((ncols != 1021) || (nrows != 1381))
+
+// we are optmistic: now let's check
+// if all bands have the same dimension.
+// ok: this will avoid any surprises!
+  int ncols = band_dimensions[0].first;
+  int nrows = band_dimensions[0].second;
+
+  for(int i = 1; i < nbands; ++i)
   {
-    boost::format err_msg("invalid raster size: %1%. It must be a 1021x1381!");
-    throw scietl::gdal_error() << scietl::error_description((err_msg % args.source_file_name).str());
-  }
-  
-  GDALDataType pixel_type = GDALGetRasterDataType(band);
-  
-  if(pixel_type != GDT_Byte)
-  {
-    boost::format err_msg("invalid raster pixel type: %1%. It must be a raster with a single band with pixels of byte data type!");
-    throw scietl::gdal_error() << scietl::error_description((err_msg % args.source_file_name).str());
-  }
-  
-  std::size_t pixel_size = scietl::core::num_bytes(pixel_type);
-  
-  boost::shared_array<unsigned char> buffer(new unsigned char[ncols * nrows * pixel_size]);
-  
-  CPLErr result = GDALRasterIO(band, GF_Read, 0, 0, ncols, nrows, buffer.get(), ncols, nrows, pixel_type, 0, 0);
-  
-  if(result == CE_Failure)
-  {
-    boost::format err_msg("could not read dataset: '%1%'!");
-    throw scietl::gdal_error() << scietl::error_description((err_msg % args.source_file_name).str());
+    if(ncols != band_dimensions[i].first)
+    {
+      boost::format err_msg("input file '%1%' have bands with different number of columns and rows.");
+      throw scietl::gdal_error() << scietl::error_description((err_msg % args.source_file_name).str());
+    }
   }
   
   if(args.verbose)
-  {
-    std::cout << "OK!" << std::endl;
-    std::cout << "\tsaving data... " << std::flush;
-  }
-  
+    std::cout << "\tsaving data do SciDB binary file... " << std::flush;
+
+// it's time to save the data in a binary file
   std::ofstream f(args.target_file_name.c_str(), std::ios::binary);
 
   if(!f.is_open())
@@ -239,12 +270,16 @@ void convert(const input_arguments& args)
     throw scietl::gdal_error() << scietl::error_description((err_msg % args.target_file_name).str());
   }
 
-  unsigned char* buffer_mark = buffer.get();
+  std::vector<unsigned char*> buffer_marks;
 
+  for(const auto& b : data_bands)
+    buffer_marks.push_back(b.get());
+ 
   for(int i = 0; i != nrows; ++i)
   {
     for(int j = 0; j != ncols; ++j)
     {
+// write col-id, row-id, time-id
       int16_t col = static_cast<int16_t>(j);
       int16_t row = static_cast<int16_t>(i);
       int16_t t = args.time_point;
@@ -252,9 +287,13 @@ void convert(const input_arguments& args)
       f.write(reinterpret_cast<char*>(&col), sizeof(int16_t));
       f.write(reinterpret_cast<char*>(&row), sizeof(int16_t));
       f.write(reinterpret_cast<char*>(&t), sizeof(int16_t));
-      f.write(reinterpret_cast<char*>(buffer_mark), pixel_size);
       
-      buffer_mark += pixel_size;
+// write band data
+      for(int k = 0;  k != nbands; ++k)
+      {
+        f.write(reinterpret_cast<char*>(buffer_marks[k]), pixel_size_bands[k]);
+        buffer_marks[k] += pixel_size_bands[k];
+      }
     }
   }
   

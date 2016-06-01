@@ -20,27 +20,27 @@
  */
 
 /*!
-  \file scietl/focos2scidb/Exception.hpp
+  \file scietl/fire2scidb/Exception.hpp
 
-  \brief Base exception class for focos2scidb.
+  \brief Base exception class for fire2scidb.
 
   \author Gilberto Ribeiro de Queiroz
  */
 
-#ifndef __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
-#define __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#ifndef __SCIETL_FIRE2SCIDB_EXCEPTION_HPP__
+#define __SCIETL_FIRE2SCIDB_EXCEPTION_HPP__
 
 // SciETL
 #include "../Exception.hpp"
 
 namespace scietl
 {
-  namespace focos2scidb
+  namespace fire2scidb
   {
-    //! Base exception class for focos2scidb.
+    //! Base exception class for fire2scidb.
     struct exception: virtual scietl::exception { };
     
-  }  // end namespace focos2scidb
+  }  // end namespace fire2scidb
 }    // end namespace scietl
 
-#endif // __SCIETL_FOCOS2SCIDB_EXCEPTION_HPP__
+#endif // __SCIETL_FIRE2SCIDB_EXCEPTION_HPP__
