@@ -1,0 +1,45 @@
+NAME
+      fire2scidb - a command line application for converting fire data products to a binary format that can be used to load data to a SciDB 1D-array.
+
+SYNOPSIS
+
+      fire2scidb [--version] [--verbose] [--help] --f <fire-data-product>
+                  --o <output-file>
+                  --t <time-point>
+
+DESCRIPTION
+
+fire2scidb is a command line application for converting
+fire data products to a binary format that can be used
+to load data to a SciDB 1D-array.
+
+OPTIONS
+
+      --version
+          Prints fire2scidb conversion tool version.
+
+      --verbose
+          Turns on verbose mode: prints timing and some more information about the conversion progress.
+
+      --help
+          Prints help message.
+
+      --f
+          The source fire data product file.
+
+      --o
+          The output file name.
+
+      --t
+          The time point in the timeline. This will depend on the array time dimension.
+
+
+FURTHER DOCUMENTATION
+
+      fire2scidb --f 2001_02_grd5km_focos_referencia.tif --o output-file.scidb --t 2
+
+
+For more infomation on fire2scidb, please, visit its main web page at: https://github.com/e-sensing/scietl.
+
+
+  June 2016, e-Sensing Team <esensing-team@dpi.inpe.br>

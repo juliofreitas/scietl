@@ -54,7 +54,7 @@ See [MODIS to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/
 
 Command Syntax:
 ```
-fire2scidb [--version] [--help] --f <source-file> --o <output-file> --t <time-point>
+fire2scidb [--version] [--verbose][--help] --f <source-file> --o <output-file> --t <time-point>
 ```
 
 It accepts the following options:
@@ -62,12 +62,12 @@ It accepts the following options:
 - ```--verbose```: Turns on verbose mode: prints timing and some more information about the conversion progress.
 - ```--help```: Prints help message.
 - ```--f```: The source file containing the fire data product.
-- ```--t```: The time point in the timeline. This will depend on the array time dimension.
 - ```--o```: The output file name.
+- ```--t```: The time point in the timeline. This will depend on the array time dimension.
 
 Example:
 ```
-$ ./fire2scidb --f 2000_01_grd5km_focos_referencia.tif --o 2000_01_grd5km_focos_referencia.scidb --t 1
+$ fire2scidb --f 2001_02_grd5km_focos_referencia.tif --o output-file.scidb --t 2
 ```
 
 See [Fire to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/fire2scidb-user-manual.txt) for more information on it.
