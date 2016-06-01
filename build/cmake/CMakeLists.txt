@@ -133,6 +133,12 @@ endif()
 find_package(GDAL REQUIRED)
 
 #
+# Global include directories
+#
+include_directories(${Boost_INCLUDE_DIR})
+include_directories(${GDAL_INCLUDE_DIR})
+
+#
 # build options
 #
 # warning: please, do not change the order below!
@@ -140,7 +146,7 @@ find_package(GDAL REQUIRED)
 
 option(SCIETL_MODIS2SCIDB_ENABLED "Build SciETL MODIS conversion tool?" ON)
 option(SCIETL_SRTM2SCIDB_ENABLED "Build SciETL SRTM conversion tool?" ON)
-option(SCIETL_FOCOS2SCIDB_ENABLED "Build SciETL FOCUS conversion tool?" ON)
+option(SCIETL_FIRE2SCIDB_ENABLED "Build SciETL Fire Data Products conversion tool?" ON)
 
 
 #
@@ -182,8 +188,8 @@ if(SCIETL_SRTM2SCIDB_ENABLED)
   add_subdirectory(scietl_srtm2scidb)
 endif()
 
-if(SCIETL_FOCOS2SCIDB_ENABLED)
-  add_subdirectory(scietl_focos2scidb)
+if(SCIETL_FIRE2SCIDB_ENABLED)
+  add_subdirectory(scietl_fire2scidb)
 endif()
 
 

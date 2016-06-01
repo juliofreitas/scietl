@@ -22,7 +22,7 @@
 #  Authors: Gilberto Ribeiro de Queiroz (gribeiro@dpi.inpe.br)
 #           Raphael Willian da Costa (raphael.costa@dpi.inpe.br)
 #
-#  Description: Load fire spots data to SciDB.
+#  Description: Load hotspot data to SciDB.
 #
 
 import argparse
@@ -30,14 +30,6 @@ import datetime
 import os
 import re
 import subprocess
-
-#
-# Requirements for the script execution:
-# - CREATE ARRAY fire_risk_monthly <value:uint8>[col=0:1020,1,0, row=0:1380,1381,0, time_idx=0:*,1,0];
-#   or
-#   CREATE ARRAY fire_risk_daily <value:uint8>[col=0:1020,1,0, row=0:1380,1381,0, time_idx=0:*,1,0];
-# 
-#
 
 #
 # change this for fine tuning

@@ -26,9 +26,6 @@
 #          Roger Victor
 #
 
-include_directories(${Boost_INCLUDE_DIR})
-include_directories(${GDAL_INCLUDE_DIR})
-
 file(GLOB SCIETL_SRC_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/srtm2scidb/*.cpp)
 file(GLOB SCIETL_HDR_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/srtm2scidb/*.hpp)
 

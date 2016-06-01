@@ -18,32 +18,29 @@
 #  along with SciETL. See LICENSE. If not, write to
 #  e-sensing team at <esensning-team@dpi.inpe.br>.
 #
-#  Description: CMake script for focos2scidb tool.
+#  Description: CMake script for the Fire Data Products conversion tool.
 #
 #  Author: Gilberto Ribeiro de Queiroz
 #
 
-include_directories(${Boost_INCLUDE_DIR})
-include_directories(${GDAL_INCLUDE_DIR})
-
-file(GLOB SCIETL_SRC_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/focos2scidb/*.cpp)
-file(GLOB SCIETL_HDR_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/focos2scidb/*.hpp)
+file(GLOB SCIETL_SRC_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/fire2scidb/*.cpp)
+file(GLOB SCIETL_HDR_FILES ${SCIETL_ABSOLUTE_ROOT_DIR}/src/scietl/fire2scidb/*.hpp)
 
 source_group("Source Files"  FILES ${SCIETL_SRC_FILES})
 source_group("Header Files"  FILES ${SCIETL_HDR_FILES})
 
-add_executable(focos2scidb ${SCIETL_HDR_FILES} ${SCIETL_SRC_FILES})
+add_executable(fire2scidb ${SCIETL_HDR_FILES} ${SCIETL_SRC_FILES})
 
-target_link_libraries(focos2scidb scietl_core
-                                  ${Boost_SYSTEM_LIBRARY}
-                                  ${Boost_DATE_TIME_LIBRARY}
-                                  ${Boost_CHRONO_LIBRARY}
-                                  ${Boost_TIMER_LIBRARY}
-                                  ${Boost_FILESYSTEM_LIBRARY}
-                                  ${Boost_PROGRAM_OPTIONS_LIBRARY}
-                                  ${GDAL_LIBRARY})
+target_link_libraries(fire2scidb scietl_core
+                                 ${Boost_FILESYSTEM_LIBRARY}
+                                 ${Boost_SYSTEM_LIBRARY}
+                                 ${Boost_TIMER_LIBRARY}
+                                 ${Boost_DATE_TIME_LIBRARY}
+                                 ${Boost_CHRONO_LIBRARY}
+                                 ${Boost_PROGRAM_OPTIONS_LIBRARY}
+                                 ${GDAL_LIBRARY})
 
-install(TARGETS focos2scidb
+install(TARGETS fire2scidb
         EXPORT scietl-targets
         RUNTIME DESTINATION ${SCIETL_DESTINATION_RUNTIME} COMPONENT runtime
         LIBRARY DESTINATION ${SCIETL_DESTINATION_LIBRARY} COMPONENT runtime
