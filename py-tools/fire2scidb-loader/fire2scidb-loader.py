@@ -35,13 +35,36 @@ import subprocess
 # change this for fine tuning
 #
 scidb_cluster_name = "focos"
-monthly_start_date = "2000-01";
-daily_start_date = "2014-01-01";
-create_1d_array_cmd = "iquery -naq \"CREATE ARRAY fire_risk_1d_tmp <col:int16, row:int16, time_idx:int16, value:uint8> [i=0:*,1410001,0];\""
-tmp_array_1d = "fire_risk_1d_tmp"
-tmp_array_data_format = "'(int16, int16, int16, uint8)'"
-array_3d_monthly_name = "fire_risk_monthly"
-array_3d_daily_name = "fire_risk_daily"
+
+geo_arrays = {
+  "hotspot_daily": {
+    "start_date": "2014-01-01",
+    "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_daily_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:1410000,1410001,0];\"",
+    "tmp_array_1d": "hotspot_daily_1d_tmp",
+    "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
+    "array_3d_name": "hotspot_daily"
+  },
+  "hotspot_monthly": {
+    "start_date": "2000-01",
+    "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_monthly_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:1410000,1410001,0];\"",
+    "tmp_array_1d": "hotspot_monthly_1d_tmp",
+    "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
+    "array_3d_name": "hotspot_monthly"
+  },
+  "hotspot_risk_daily": {
+    "start_date": "2015-12-01",
+    "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_risk_daily_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:29889971,29889972,0];\"",
+    "tmp_array_1d": "hotspot_risk_daily_1d_tmp",
+    "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
+    "array_3d_name": "hotspot_risk_daily"
+  },
+  "hotspot_risk_monthly": "2015-01",
+    "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_daily_1d_tmp <col:int16, row:int16, time_idx:int16, high_risk:uint8, medium_risk:uint8, low_risk:uint8> [i=0:34979999,34980000,0];\"",
+    "tmp_array_1d": "hotspot_daily_1d_tmp",
+    "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
+    "array_3d_name": "hotspot_daily"
+  }
+}
 
 
 def compute_monthly_time_index(year, month, initial_year):
