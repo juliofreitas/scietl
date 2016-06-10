@@ -45,20 +45,21 @@ geo_arrays = {
     "array_3d_name": "hotspot_daily"
   },
   "hotspot_monthly": {
-    "start_date": "2000-01",
-    "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_monthly_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:1410000,1410001,0];\"",
-    "tmp_array_1d": "hotspot_monthly_1d_tmp",
-    "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
-    "array_3d_name": "hotspot_monthly"
+        "start_date": "2000-01",
+        "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_monthly_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:1410000,1410001,0];\"",
+        "tmp_array_1d": "hotspot_monthly_1d_tmp",
+        "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
+        "array_3d_name": "hotspot_monthly"
   },
   "hotspot_risk_daily": {
-    "start_date": "2015-12-01",
-    "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_risk_daily_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:29889971,29889972,0];\"",
-    "tmp_array_1d": "hotspot_risk_daily_1d_tmp",
-    "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
-    "array_3d_name": "hotspot_risk_daily"
+        "start_date": "2015-12-01",
+        "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_risk_daily_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:29889971,29889972,0];\"",
+        "tmp_array_1d": "hotspot_risk_daily_1d_tmp",
+        "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
+        "array_3d_name": "hotspot_risk_daily"
   },
-  "hotspot_risk_monthly": "2015-01",
+  "hotspot_risk_monthly": {
+    "start_date": "2015-01",
     "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_daily_1d_tmp <col:int16, row:int16, time_idx:int16, high_risk:uint8, medium_risk:uint8, low_risk:uint8> [i=0:34979999,34980000,0];\"",
     "tmp_array_1d": "hotspot_daily_1d_tmp",
     "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
@@ -128,6 +129,10 @@ if __name__ == '__main__':
                                     help="Source directory with the fire spot data",
                                     required=True)
 
+    required_arguments.add_argument("-e", "--extension",
+                                help="The file format (extension)",
+                                required=True)
+
     required_arguments.add_argument("-o", "--outdir",
                                     help="Temporary directory for converting TIFF files into SciDB binary data",
                                     required=True)
@@ -136,12 +141,14 @@ if __name__ == '__main__':
 
     source_dir = args.directory
 
+    file_extension = args.extension
+
     output_dir = args.outdir
 
 #
 # Search for input risk-fire files
 #
-    fire_spot_files = os.popen("find {0} -name *.tif | sort".format(source_dir)).read().split('\n')
+    fire_spot_files = os.popen("find {0} -name *.{1} | sort".format(source_dir, file_extension)).read().split('\n')
 
     fire_spot_files.remove('')
 
