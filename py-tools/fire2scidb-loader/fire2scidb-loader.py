@@ -43,7 +43,7 @@ geo_arrays = {
         "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_daily_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:1410000,1410001,0];\"",
         "tmp_array_1d": "hotspot_daily_1d_tmp",
         "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
-        "array_3d_name": "hotspot_daily"
+        "array_3d": "hotspot_daily"
   },
   "hotspot_monthly": {
         "file_extension": "tif",
@@ -51,7 +51,7 @@ geo_arrays = {
         "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_monthly_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:1410000,1410001,0];\"",
         "tmp_array_1d": "hotspot_monthly_1d_tmp",
         "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
-        "array_3d_name": "hotspot_monthly"
+        "array_3d": "hotspot_monthly"
   },
   "hotspot_risk_daily": {
         "file_extension": "env",
@@ -59,7 +59,7 @@ geo_arrays = {
         "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_risk_daily_1d_tmp <col:int16, row:int16, time_idx:int16, measure:uint8> [i=0:29889971,29889972,0];\"",
         "tmp_array_1d": "hotspot_risk_daily_1d_tmp",
         "tmp_array_data_format": "'(int16, int16, int16, uint8)'",
-        "array_3d_name": "hotspot_risk_daily"
+        "array_3d": "hotspot_risk_daily"
   },
   "hotspot_risk_monthly": {
         "file_extension": "tif",
@@ -67,7 +67,7 @@ geo_arrays = {
         "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_risk_monthly_1d_tmp <col:int16, row:int16, time_idx:int16, high_risk:uint8, medium_risk:uint8, low_risk:uint8> [i=0:34979999,34980000,0];\"",
         "tmp_array_1d": "hotspot_risk_monthly_1d_tmp",
         "tmp_array_data_format": "'(int16, int16, int16, uint8, uint8, uint8)'",
-        "array_3d_name": "hotspot_risk_monthly"
+        "array_3d": "hotspot_risk_monthly"
   }
 }
 
