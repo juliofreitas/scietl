@@ -64,8 +64,8 @@ geo_arrays = {
   "hotspot_risk_monthly": {
         "file_extension": "tif",
         "start_date": "2015-01",
-        "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_daily_1d_tmp <col:int16, row:int16, time_idx:int16, high_risk:uint8, medium_risk:uint8, low_risk:uint8> [i=0:34979999,34980000,0];\"",
-        "tmp_array_1d": "hotspot_daily_1d_tmp",
+        "create_1d_array_cmd": "iquery -naq \"CREATE ARRAY hotspot_risk_monthly_1d_tmp <col:int16, row:int16, time_idx:int16, high_risk:uint8, medium_risk:uint8, low_risk:uint8> [i=0:34979999,34980000,0];\"",
+        "tmp_array_1d": "hotspot_risk_monthly_1d_tmp",
         "tmp_array_data_format": "'(int16, int16, int16, uint8, uint8, uint8)'",
         "array_3d_name": "hotspot_risk_monthly"
   }
@@ -215,10 +215,10 @@ if __name__ == '__main__':
          subprocess.call(drop_temp_1d_array_cmd, shell=True)
 
 # create temporary 1D array
-         retcode = subprocess.call(create_1d_array_cmd, shell=True)
+         retcode = subprocess.call(geo_array["create_1d_array_cmd"], shell=True)
 
          if retcode != 0:
-             print("Error creating temporary 1D array: '{0}'.".format(create_1d_array_cmd))
+             print("Error creating temporary 1D array: '{0}'.".format(geo_array["create_1d_array_cmd"]))
              exit(1);
 
 # Load data to 1D temporary array
