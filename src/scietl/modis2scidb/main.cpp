@@ -56,7 +56,9 @@ struct input_arguments
   std::string source_file_name;
   std::string target_file_name;
   std::vector<uint16_t> bands;
-  int64_t time_point;
+  int16_t time_point;
+  int32_t column_offset;
+  int32_t row_offset;
   bool verbose;
 };
 
@@ -86,8 +88,10 @@ int main(int argc, char **argv)
       ("verbose", "Turns on verbose mode: prints timing and some more information about the conversion progress.\n")
       ("f", boost::program_options::value<std::string>(&parsed_args.source_file_name), "The source HDF file to convert to SciDB's load format.\n")
       ("o", boost::program_options::value<std::string>(&parsed_args.target_file_name), "The target folder to store SciDB data file.\n")
-      ("t", boost::program_options::value<int64_t>(&parsed_args.time_point), "The timeline position for the dataset.\n")
+      ("t", boost::program_options::value<int16_t>(&parsed_args.time_point)->default_value(-1), "The timeline position for the dataset.\n")
       ("b", boost::program_options::value<std::string>(&bands_str), "A list of comma separated spectral bands to extract data, starting from 0: \"3,4\".\n")
+      ("co", boost::program_options::value<int32_t>(&parsed_args.column_offset)->default_value(0), "Column offset.\n")
+      ("ro", boost::program_options::value<int32_t>(&parsed_args.row_offset)->default_value(0), "Row offset.\n")
       ;
 
     boost::program_options::variables_map options;
@@ -171,6 +175,9 @@ void valid_args(input_arguments& args)
   
   if(boost::filesystem::exists(args.target_file_name))
     throw modis2scidb::invalid_arg_value() << modis2scidb::error_description("can not overwrite an existing output file!");
+  
+  if((args.column_offset < 0) || (args.row_offset < 0))
+    throw modis2scidb::invalid_arg_value() << modis2scidb::error_description("row and column offset must be a positive number or zero!");
 }
 
 void convert(const input_arguments& args)
@@ -285,14 +292,6 @@ void convert(const input_arguments& args)
   
   boost::filesystem::path input_file(args.source_file_name);
 
-  modis2scidb::modis_file_descriptor file_info = modis2scidb::parse_modis_file_name(input_file.filename().string());
-
-  int64_t tile_h = boost::lexical_cast<int64_t>(file_info.tile.substr(1, 2));
-  int64_t tile_v = boost::lexical_cast<int64_t>(file_info.tile.substr(4, 2));
-  
-  int64_t offset_h = tile_h * ncols;
-  int64_t offset_v = tile_v * nrows;
-
   FILE* f = fopen(args.target_file_name.c_str(), "wb");
   
   if(f == 0)
@@ -301,21 +300,19 @@ void convert(const input_arguments& args)
     throw modis2scidb::gdal_error() << modis2scidb::error_description((err_msg % args.target_file_name).str());
   }
 
-  for(int64_t i = 0; i != nrows; ++i)
+  for(int32_t i = 0; i != nrows; ++i)
   {
-    int64_t gi =  offset_v + i;
+    int32_t gi =  args.row_offset + i;
 
-    for(int64_t j = 0; j != ncols; ++j)
+    for(int32_t j = 0; j != ncols; ++j)
     {
-      int64_t gj = offset_h + j;
-      
-      int64_t idx = gj + (gi * 1000000) +  (args.time_point * 100000000000);
-      
-      fwrite(&idx, sizeof(unsigned char), sizeof(int64_t), f);
+      int32_t gj = args.column_offset + j;
 
-      //fwrite(&args.time_point, sizeof(unsigned char), sizeof(int64_t), f);
-      //fwrite(&gj, sizeof(unsigned char), sizeof(int64_t), f);
-      //fwrite(&gi, sizeof(unsigned char), sizeof(int64_t), f);
+      fwrite(&gj, sizeof(unsigned char), sizeof(int32_t), f);
+      fwrite(&gi, sizeof(unsigned char), sizeof(int32_t), f);
+      
+      if(args.time_point >= 0)
+        fwrite(&args.time_point, sizeof(unsigned char), sizeof(int16_t), f);
 
       for(std::size_t b = 0; b != num_bands; ++b)
       {

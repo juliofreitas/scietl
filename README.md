@@ -29,6 +29,7 @@ Command syntax:
 modis2scidb [--version] [--help] --f <modis-hdf-source-file>
             --o <output-file>
             --b "<which bands to convert>" --t <time-point>
+            --co column-offset --ro row-offset
 ```
 
 It accepts the following options:
@@ -39,10 +40,12 @@ It accepts the following options:
 - ```--t```: The time point in the timeline. A number starting from 0.
 - ```--b```: A comma separated list of data bands to convert to SciDB load format (see example below).
 - ```--o```: The output file name.
+- ```--co```: An offset for column index.
+- ```--ro```: An offset for the row index.
 
 Example:
 ```
-$ ./modis2scidb --f MOD13Q1.A2002241.h13v10.005.2008248173553.hdf --o mod13q1-1d-array.scidb --t 1 --b "0,1,2,3,4,5,6,7,8"
+$ ./modis2scidb --f MOD09Q1.A2001001.h12v09.005.2006350212130.hdf --o mod09q1-1d-array.scidb --t 1 --b "0,1,2" --co 57600 --ro 43200
 ```
 
 See [MODIS to SciDB manual](https://github.com/e-sensing/scietl/blob/master/doc/modis2scidb-user-manual.txt) for more information on it.
