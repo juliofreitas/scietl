@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     ("verbose", "Turns on verbose mode: prints timing and some more information about the conversion progress.\n")
     ("help", "Prints help message.\n")
     ("f", boost::program_options::value<std::string>(&parsed_args.source_file_name), "The source fire data product file to convert to SciDB's load format.\n")
-    ("o", boost::program_options::value<std::string>(&parsed_args.target_file_name), "The target folder to store SciDB data file.\n")
+    ("o", boost::program_options::value<std::string>(&parsed_args.target_file_name), "The target file name: the SciDB binary data file.\n")
     ("t", boost::program_options::value<int16_t>(&parsed_args.time_point), "The timeline position for the dataset.\n")
     ;
     
@@ -196,7 +196,7 @@ void convert(const input_arguments& args)
   
   for(int i = 1; i <= nbands; ++i)
   {
-    GDALRasterBandH band = GDALGetRasterBand(dataset, 1);
+    GDALRasterBandH band = GDALGetRasterBand(dataset, i);
     
     if(band == 0)
     {
@@ -275,19 +275,21 @@ void convert(const input_arguments& args)
   for(const auto& b : data_bands)
     buffer_marks.push_back(b.get());
  
+  int16_t t = args.time_point;
+
   for(int i = 0; i != nrows; ++i)
   {
+    int16_t row = static_cast<int16_t>(i);
+
     for(int j = 0; j != ncols; ++j)
     {
 // write col-id, row-id, time-id
       int16_t col = static_cast<int16_t>(j);
-      int16_t row = static_cast<int16_t>(i);
-      int16_t t = args.time_point;
-      
+ 
       f.write(reinterpret_cast<char*>(&col), sizeof(int16_t));
       f.write(reinterpret_cast<char*>(&row), sizeof(int16_t));
       f.write(reinterpret_cast<char*>(&t), sizeof(int16_t));
-      
+
 // write band data
       for(int k = 0;  k != nbands; ++k)
       {
@@ -302,3 +304,4 @@ void convert(const input_arguments& args)
   if(args.verbose)
     std::cout << "OK!" << std::endl;
 }
+
